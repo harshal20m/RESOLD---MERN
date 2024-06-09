@@ -42,14 +42,14 @@ function Items() {
 	const userId = localStorage.getItem("userId"); // Get the user ID from local storage
 
 	return (
-		<div className="flex flex-col min-h-screen ">
+		<div className="flex flex-col mx-auto min-h-screen ">
 			<div className="container mx-auto p-4 flex-grow">
-				<h1 className="text-2xl font-bold mb-4">Items for Sale</h1>
-				<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+				<h1 className="text-2xl font-bold mb-4 text-white">Items for Sale</h1>
+				<div className="grid mx-auto grid-cols-1 md:grid-cols-3 gap-6 ">
 					{items.map((item) => (
 						<div
 							key={item._id}
-							className="max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+							className="max-w-xs  bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col justify-between"
 						>
 							{item.images.length > 0 && (
 								<Link to={`/items/${item._id}`}>
@@ -60,14 +60,14 @@ function Items() {
 									/>
 								</Link>
 							)}
-							<div className="p-5">
+							<div className="p-5 flex flex-col ">
 								<Link to={`/items/${item._id}`}>
 									<h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 										{item.title}
 									</h5>
 								</Link>
 								<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{item.description}</p>
-								<p className="text-blue-500 mb-4">Price: ${item.price}</p>
+								<p className="text-blue-500 mb-4">Price: Rs. {item.price}/-</p>
 								<p className="text-gray-500 mb-4">
 									Seller: {item.user ? item.user.username : "Unknown"}
 								</p>
@@ -115,32 +115,34 @@ function Items() {
 					))}
 				</div>
 			</div>
-			{/* <div className="flex justify-center items-center py-4 dark:bg-gray-700">
-				{Array.from({ length: totalPages }, (_, index) => (
-					<button
-						key={index}
-						onClick={() => setCurrentPage(index + 1)}
-						className={`px-4 py-2 mx-1 rounded-full ${
-							currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-gray-300"
-						}`}
-					>
-						{index + 1}
-					</button>
-				))}
-			</div> */}
+
 			{totalPages > 1 && (
 				<div className="flex justify-center items-center py-4 dark:bg-gray-700">
+					<button
+						onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)}
+						className="px-2 py-0.5 mx-0.5 text-2xl   "
+						disabled={currentPage === 1}
+					>
+						<i className="bx bx-chevrons-left bx-fade-left"></i>
+					</button>
 					{Array.from({ length: totalPages }, (_, index) => (
 						<button
 							key={index}
 							onClick={() => setCurrentPage(index + 1)}
-							className={`px-4 py-2 mx-1 rounded-full ${
+							className={`px-2 py-0.5 mx-0.5 text-xs rounded-full ${
 								currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-gray-300"
 							}`}
 						>
 							{index + 1}
 						</button>
 					))}
+					<button
+						onClick={() => setCurrentPage(currentPage < totalPages ? currentPage + 1 : totalPages)}
+						className="px-2 py-0.5 mx-0.5 text-2xl   "
+						disabled={currentPage === totalPages}
+					>
+						<i className="bx bx-chevrons-right bx-fade-right"></i>
+					</button>
 				</div>
 			)}
 		</div>

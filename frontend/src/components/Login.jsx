@@ -19,7 +19,6 @@ function Login() {
 		} catch (error) {
 			alert("Invalid credentials");
 		}
-		window.location.reload();
 	};
 
 	return (
@@ -32,6 +31,7 @@ function Login() {
 					value={username}
 					onChange={(e) => setUsername(e.target.value)}
 					className="border p-2 w-full"
+					required
 				/>
 				<input
 					type="password"
@@ -39,6 +39,7 @@ function Login() {
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 					className="border p-2 w-full mt-4"
+					required
 				/>
 				<button type="submit" className="bg-blue-500 text-white p-2 mt-4">
 					Login

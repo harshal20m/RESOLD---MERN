@@ -10,6 +10,7 @@ const multer = require("multer");
 const path = require("path");
 const User = require("./models/User");
 const Item = require("./models/Item");
+const Chat = require("./models/Chat");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -169,9 +170,9 @@ app.get("/items/:id", async (req, res) => {
 });
 
 app.put("/items/:id", authenticateToken, upload.array("images", 5), async (req, res) => {
-	// Updated to handle multiple images
 	const { title, description, price } = req.body;
 	const item = await Item.findById(req.params.id);
+	if (!item) return res.status(404).send("Item not found");
 	if (item.user.toString() !== req.user.id) return res.sendStatus(403);
 
 	item.title = title;
@@ -179,7 +180,7 @@ app.put("/items/:id", authenticateToken, upload.array("images", 5), async (req, 
 	item.price = price;
 	if (req.files.length > 0) {
 		const images = req.files.map((file) => file.path);
-		item.images.push(...images); // Add new images to the existing array
+		item.images = images; // Replace existing images with new images
 	}
 	await item.save();
 	res.send("Item updated");
@@ -209,6 +210,8 @@ app.delete("/items/:id", authenticateToken, async (req, res) => {
 	await Item.findByIdAndDelete(req.params.id); // Use findByIdAndDelete instead of item.remove
 	res.send("Item deleted");
 });
+
+//chat functionality here
 
 app.listen(port, () => {
 	console.log(`Server running on port ${port}`);

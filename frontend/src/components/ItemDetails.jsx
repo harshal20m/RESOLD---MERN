@@ -52,7 +52,7 @@ function ItemDetails() {
 				<div className="price text-3xl font-bold text-red-500">
 					RS. {item.price} <span className="text-gray-800 text-base">+12% GST Added</span>
 				</div>
-				<button className="bg-blue-500 text-white px-6 py-3 rounded mt-4">Buy Now</button>
+				<button className="bg-blue-500 text-white px-6 py-3 rounded mt-4">Contact Seller</button>
 				<div className="seller-info mt-6">
 					<h2 className="text-2xl font-bold mb-4">Seller Information</h2>
 					{user && (
@@ -65,6 +65,9 @@ function ItemDetails() {
 							</p>
 							<p>
 								Email id: <span className="text-white">{user.email}</span>
+							</p>
+							<p>
+								Address: <span className="text-white">{user.address}</span>
 							</p>
 						</div>
 					)}

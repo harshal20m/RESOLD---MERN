@@ -51,6 +51,7 @@ function Signup() {
 					value={username}
 					onChange={(e) => setUsername(e.target.value)}
 					className="border p-2 w-full"
+					required
 				/>
 				<input
 					type="text"
@@ -58,6 +59,7 @@ function Signup() {
 					value={contact}
 					onChange={(e) => setContact(e.target.value)}
 					className="border p-2 w-full mt-4"
+					required
 				/>
 				<input
 					type="text"
@@ -65,6 +67,7 @@ function Signup() {
 					value={address}
 					onChange={(e) => setAddress(e.target.value)}
 					className="border p-2 w-full mt-4"
+					required
 				/>
 				<input
 					type="email"
@@ -72,6 +75,7 @@ function Signup() {
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
 					className="border p-2 w-full mt-4"
+					required
 				/>
 				<input
 					type="password"
@@ -79,6 +83,7 @@ function Signup() {
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 					className="border p-2 w-full mt-4"
+					required
 				/>
 				<input type="file" onChange={handleImageChange} className="mt-4" />
 				<button type="submit" className="bg-blue-500 text-white p-2 mt-4">

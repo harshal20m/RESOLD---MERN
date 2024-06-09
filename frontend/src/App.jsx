@@ -6,6 +6,7 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Items from "./components/Items";
 import Profile from "./components/Profile";
+import EditProfile from "./components/EditProfile";
 import NewItem from "./components/NewItem";
 import EditItem from "./components/EditItem";
 import ItemDetails from "./components/ItemDetails";
@@ -28,6 +29,7 @@ function App() {
 						<Route path="/login" element={<Login />} />
 						<Route path="/items" element={<Items />} />
 						<Route path="/profile/:id" element={<Profile />} />
+						<Route path="/edit-profile" element={<EditProfile />} />
 						<Route
 							path="/new-item"
 							element={
