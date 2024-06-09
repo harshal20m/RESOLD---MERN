@@ -25,14 +25,14 @@ function AddImages({ itemId }) {
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="mt-4">
+		<form onSubmit={handleSubmit} className="mt-4 ">
 			<input
 				type="file"
 				multiple
 				onChange={(e) => setImages([...e.target.files])}
-				className="border p-2 w-full"
+				className="border p-2 w-1/2 mr-3 rounded-lg"
 			/>
-			<button type="submit" className="bg-blue-500 text-white p-2 mt-4">
+			<button type="submit" className="bg-blue-500 text-white p-2 mt-4 rounded-lg ">
 				Add Images
 			</button>
 		</form>
