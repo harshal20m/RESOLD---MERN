@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import AddImages from "./AddImages";
+import "./css/itemdetails.css";
 
 function ItemDetails() {
 	const { id } = useParams();
@@ -44,7 +45,10 @@ function ItemDetails() {
 					))}
 				</div>
 			</div>
-			<div className="details-section w-full md:w-1/2 p-4">
+			<div
+				className="details-section border border-cream rounded-lg w-full md:w-1/2 p-4 overflow-y-auto custom-scrollbar"
+				style={{ maxHeight: "75vh" }}
+			>
 				<h1 className="text-3xl font-bold">{item.title}</h1>
 
 				<div className="text-green-600"> Available</div>
@@ -53,6 +57,44 @@ function ItemDetails() {
 					RS. {item.price} <span className="text-gray-800 text-base">+12% GST Added</span>
 				</div>
 				<button className="bg-blue-500 text-white px-6 py-3 rounded mt-4">Contact Seller</button>
+				<div className="seller-info mt-6">
+					<h2 className="text-2xl font-bold mb-4">Seller Information</h2>
+					{user && (
+						<div className="text-black">
+							<p>
+								Name: <span className="text-white">{user.username}</span>
+							</p>
+							<p>
+								Contact: <span className="text-white">{user.contact}</span>
+							</p>
+							<p>
+								Email id: <span className="text-white">{user.email}</span>
+							</p>
+							<p>
+								Address: <span className="text-white">{user.address}</span>
+							</p>
+						</div>
+					)}
+				</div>
+				<div className="seller-info mt-6">
+					<h2 className="text-2xl font-bold mb-4">Seller Information</h2>
+					{user && (
+						<div className="text-black">
+							<p>
+								Name: <span className="text-white">{user.username}</span>
+							</p>
+							<p>
+								Contact: <span className="text-white">{user.contact}</span>
+							</p>
+							<p>
+								Email id: <span className="text-white">{user.email}</span>
+							</p>
+							<p>
+								Address: <span className="text-white">{user.address}</span>
+							</p>
+						</div>
+					)}
+				</div>
 				<div className="seller-info mt-6">
 					<h2 className="text-2xl font-bold mb-4">Seller Information</h2>
 					{user && (
