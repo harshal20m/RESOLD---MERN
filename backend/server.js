@@ -1,4 +1,5 @@
 // server.js
+require("dotenv").config();
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -10,6 +11,12 @@ const multer = require("multer");
 const path = require("path");
 const User = require("./models/User");
 const Item = require("./models/Item");
+
+//map box
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapToken = process.env.MAP_TOKEN;
+const geocodingClient = mbxGeocoding({ accessToken: mapToken });
+
 const Chat = require("./models/Chat");
 
 const app = express();
@@ -77,37 +84,40 @@ const authenticateToken = (req, res, next) => {
 	});
 };
 
+// app.post("/items", authenticateToken, upload.array("images", 5), async (req, res) => {
+// 	// Updated to handle multiple images
+// 	const { title, description, price } = req.body;
+// 	const images = req.files.map((file) => file.path);
+// 	const newItem = new Item({ title, description, price, images, user: req.user.id });
+// 	await newItem.save();
+// 	res.status(201).send("Item created");
+// });
+
 app.post("/items", authenticateToken, upload.array("images", 5), async (req, res) => {
 	// Updated to handle multiple images
+
+	const user = await User.findById(req.user.id);
+
+	// Extract the address and get the first word
+	const city = user.address.match(/\b\w+\b/g)[0];
+	const state = user.address.match(/\b\w+\b/g)[1];
+
+	let response = await geocodingClient
+		.forwardGeocode({
+			query: `${city},${state}`, //yaha pe location ana chaiye wo ayega user info se
+			limit: 1,
+		})
+		.send();
+
 	const { title, description, price } = req.body;
 	const images = req.files.map((file) => file.path);
 	const newItem = new Item({ title, description, price, images, user: req.user.id });
+	newItem.geometry = response.body.features[0].geometry;
+
 	await newItem.save();
+	console.log(newItem);
 	res.status(201).send("Item created");
 });
-
-// app.get("/items", async (req, res) => {
-// 	const { page = 1, limit = 10 } = req.query;
-
-// 	try {
-// 		const items = await Item.find()
-// 			.populate("user", "username")
-// 			.limit(limit * 1)
-// 			.skip((page - 1) * limit)
-// 			.exec();
-
-// 		const count = await Item.countDocuments();
-
-// 		res.json({
-// 			items,
-// 			totalPages: Math.ceil(count / limit),
-// 			currentPage: Number(page),
-// 		});
-// 	} catch (err) {
-// 		console.error(err.message);
-// 		res.status(500).send("Server Error");
-// 	}
-// });
 
 //search functionality
 // server.js

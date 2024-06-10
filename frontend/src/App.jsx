@@ -11,6 +11,7 @@ import NewItem from "./components/NewItem";
 import EditItem from "./components/EditItem";
 import ItemDetails from "./components/ItemDetails";
 import SearchResults from "./components/SearchResults";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const ProtectedRoute = ({ children }) => {
 	const token = localStorage.getItem("token");
@@ -19,40 +20,42 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
 	return (
-		<Router>
-			<div className="flex flex-col dark:bg-gray-700 min-h-screen">
-				<Navbar />
-				<main className="flex-grow">
-					<Routes>
-						<Route path="/" element={<Home />} />
-						<Route path="/signup" element={<Signup />} />
-						<Route path="/login" element={<Login />} />
-						<Route path="/items" element={<Items />} />
-						<Route path="/profile/:id" element={<Profile />} />
-						<Route path="/edit-profile" element={<EditProfile />} />
-						<Route
-							path="/new-item"
-							element={
-								<ProtectedRoute>
-									<NewItem />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path="/edit-item/:id"
-							element={
-								<ProtectedRoute>
-									<EditItem />
-								</ProtectedRoute>
-							}
-						/>
-						<Route path="/items/:id" element={<ItemDetails />} />
-						<Route path="/search" element={<SearchResults />} />
-					</Routes>
-				</main>
-				<Footer />
-			</div>
-		</Router>
+		<ErrorBoundary>
+			<Router>
+				<div className="flex flex-col dark:bg-gray-700 min-h-screen">
+					<Navbar />
+					<main className="flex-grow">
+						<Routes>
+							<Route path="/" element={<Home />} />
+							<Route path="/signup" element={<Signup />} />
+							<Route path="/login" element={<Login />} />
+							<Route path="/items" element={<Items />} />
+							<Route path="/profile/:id" element={<Profile />} />
+							<Route path="/edit-profile" element={<EditProfile />} />
+							<Route
+								path="/new-item"
+								element={
+									<ProtectedRoute>
+										<NewItem />
+									</ProtectedRoute>
+								}
+							/>
+							<Route
+								path="/edit-item/:id"
+								element={
+									<ProtectedRoute>
+										<EditItem />
+									</ProtectedRoute>
+								}
+							/>
+							<Route path="/items/:id" element={<ItemDetails />} />
+							<Route path="/search" element={<SearchResults />} />
+						</Routes>
+					</main>
+					<Footer />
+				</div>
+			</Router>
+		</ErrorBoundary>
 	);
 }
 

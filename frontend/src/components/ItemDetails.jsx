@@ -3,21 +3,24 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import AddImages from "./AddImages";
 import "./css/itemdetails.css";
+import MapComponent from "./MapComponent";
 
 function ItemDetails() {
 	const { id } = useParams();
 	const [item, setItem] = useState(null);
 	const [user, setUser] = useState(null);
 	const [mainImage, setMainImage] = useState("");
+	const [coordinates, setCoordinates] = useState([73.855167, 18.521526]);
 
 	useEffect(() => {
 		const fetchItem = async () => {
 			try {
 				const response = await axios.get(`http://localhost:5000/items/${id}`);
+
 				setItem(response.data.items);
 				setUser(response.data.userid);
-
 				setMainImage(response.data.items.images[0]);
+				setCoordinates(response.data.items.geometry.coordinates || "");
 			} catch (error) {
 				console.error(error);
 			}
@@ -57,62 +60,34 @@ function ItemDetails() {
 					RS. {item.price} <span className="text-gray-800 text-base">+12% GST Added</span>
 				</div>
 				<button className="bg-blue-500 text-white px-6 py-3 rounded mt-4">Contact Seller</button>
+
 				<div className="seller-info mt-6">
 					<h2 className="text-2xl font-bold mb-4">Seller Information</h2>
 					{user && (
-						<div className="text-black">
-							<p>
-								Name: <span className="text-white">{user.username}</span>
-							</p>
-							<p>
-								Contact: <span className="text-white">{user.contact}</span>
-							</p>
-							<p>
-								Email id: <span className="text-white">{user.email}</span>
-							</p>
-							<p>
-								Address: <span className="text-white">{user.address}</span>
-							</p>
-						</div>
+						<>
+							<div className="text-black">
+								<p>
+									Name: <span className="text-white">{user.username}</span>
+								</p>
+								<p>
+									Contact: <span className="text-white">{user.contact}</span>
+								</p>
+								<p>
+									Email id: <span className="text-white">{user.email}</span>
+								</p>
+								<p>
+									Address: <span className="text-white">{user.address}</span>
+								</p>
+							</div>
+						</>
 					)}
-				</div>
-				<div className="seller-info mt-6">
-					<h2 className="text-2xl font-bold mb-4">Seller Information</h2>
-					{user && (
-						<div className="text-black">
-							<p>
-								Name: <span className="text-white">{user.username}</span>
-							</p>
-							<p>
-								Contact: <span className="text-white">{user.contact}</span>
-							</p>
-							<p>
-								Email id: <span className="text-white">{user.email}</span>
-							</p>
-							<p>
-								Address: <span className="text-white">{user.address}</span>
-							</p>
-						</div>
-					)}
-				</div>
-				<div className="seller-info mt-6">
-					<h2 className="text-2xl font-bold mb-4">Seller Information</h2>
-					{user && (
-						<div className="text-black">
-							<p>
-								Name: <span className="text-white">{user.username}</span>
-							</p>
-							<p>
-								Contact: <span className="text-white">{user.contact}</span>
-							</p>
-							<p>
-								Email id: <span className="text-white">{user.email}</span>
-							</p>
-							<p>
-								Address: <span className="text-white">{user.address}</span>
-							</p>
-						</div>
-					)}
+					{coordinates &&
+						coordinates.length === 2 && ( // Check if coordinates are available
+							<>
+								<h2 className="text-2xl font-bold mt-3 mb-4">Location</h2>
+								<MapComponent coordinates={coordinates} />
+							</>
+						)}
 				</div>
 				{item.user === localStorage.getItem("userId") && (
 					<div className="mt-6 ">
