@@ -142,11 +142,10 @@ function Navbar() {
 
 	useEffect(() => {
 		if (userId) {
-			console.log(userId);
 			const fetchUserData = async () => {
 				try {
 					const response = await axios.get(`http://localhost:5000/users/${userId}`);
-					setProfileImage(response.data.profileImage);
+					setProfileImage(response.data.user.profileImage);
 				} catch (error) {
 					console.error(error);
 				}

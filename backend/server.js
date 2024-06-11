@@ -1,5 +1,7 @@
 // server.js
-require("dotenv").config();
+if (process.env.NODE_ENV != "production") {
+	require("dotenv").config();
+}
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -28,7 +30,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-mongoose.connect("mongodb://localhost:27017/olx-clone");
+let dbURL = process.env.MONGO_DB_URI;
+main()
+	.then(() => {
+		console.log("connected to DB.");
+	})
+	.catch((err) => console.log(err));
+
+async function main() {
+	await mongoose.connect(dbURL);
+}
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
@@ -63,23 +74,27 @@ app.post("/login", async (req, res) => {
 	const { username, password } = req.body;
 	const user = await User.findOne({ username });
 	if (user && (await bcrypt.compare(password, user.password))) {
-		const token = jwt.sign({ username, id: user._id }, "secret_key", { expiresIn: "1h" });
+		const token = jwt.sign({ username, id: user._id }, "secret_key", { expiresIn: "24h" });
 		const { _id } = user;
-		console.log(_id);
+
 		res.json({ token, _id });
 	} else {
 		res.status(401).send("Invalid credentials");
 	}
 });
-
 const authenticateToken = (req, res, next) => {
-	const token = req.headers["authorization"];
-	if (token == null) return res.sendStatus(401);
+	const authHeader = req.headers["authorization"];
+	const token = authHeader; // Extract token after 'Bearer '
+	if (token == null) return res.sendStatus(401); // No token provided
 
 	jwt.verify(token, "secret_key", (err, user) => {
-		console.log(token);
-		if (err) return res.sendStatus(403);
-		req.user = user;
+		if (err) {
+			if (err.name === "TokenExpiredError") {
+				return res.status(403).send("Token has expired"); // Token expired
+			}
+			return res.sendStatus(403); // Invalid token
+		}
+		req.user = user; // Attach user to request
 		next();
 	});
 };
@@ -92,7 +107,6 @@ const authenticateToken = (req, res, next) => {
 // 	await newItem.save();
 // 	res.status(201).send("Item created");
 // });
-
 app.post("/items", authenticateToken, upload.array("images", 5), async (req, res) => {
 	// Updated to handle multiple images
 
@@ -104,14 +118,22 @@ app.post("/items", authenticateToken, upload.array("images", 5), async (req, res
 
 	let response = await geocodingClient
 		.forwardGeocode({
-			query: `${city},${state}`, //yaha pe location ana chaiye wo ayega user info se
+			query: `${city},${state}`,
 			limit: 1,
 		})
 		.send();
 
-	const { title, description, price } = req.body;
+	const { title, description, price, status, category } = req.body;
 	const images = req.files.map((file) => file.path);
-	const newItem = new Item({ title, description, price, images, user: req.user.id });
+	const newItem = new Item({
+		title,
+		description,
+		price,
+		images,
+		user: req.user.id,
+		status,
+		category,
+	});
 	newItem.geometry = response.body.features[0].geometry;
 
 	await newItem.save();
@@ -125,7 +147,15 @@ app.get("/items", async (req, res) => {
 	const { page = 1, limit = 10, search = "" } = req.query;
 
 	try {
-		const query = search ? { title: { $regex: search, $options: "i" } } : {};
+		const query = search
+			? {
+					$or: [
+						{ category: { $regex: search, $options: "i" } },
+						{ title: { $regex: search, $options: "i" } },
+					],
+			  }
+			: {};
+
 		const items = await Item.find(query)
 			.populate("user", "username")
 			.limit(limit * 1)
@@ -153,24 +183,47 @@ app.get("/users/:id", async (req, res) => {
 
 // server.js new add profile editing
 app.put("/users/:id", authenticateToken, async (req, res) => {
-	const { username, contact, password } = req.body;
-	try {
-		const user = await User.findById(req.params.id);
-		console.log(user);
-		if (!user) return res.status(404).send("User not found");
+	const { username, contact, password, address, email, profileImage } = req.body;
 
-		user.username = username;
-		user.contact = contact;
-		if (password) {
-			user.password = await bcrypt.hash(password, 10);
+	try {
+		// Check if the user exists
+		const user = await User.findById(req.params.id);
+		if (!user) {
+			return res.status(404).json({ error: "User not found" });
 		}
+
+		// Validate input fields
+		if (!username && !contact && !password && !address && !email && !profileImage) {
+			return res.status(400).json({ error: "No fields provided for update" });
+		}
+
+		// Update user data
+		if (username) user.username = username;
+		if (contact) user.contact = contact;
+		if (password) {
+			// Validate password complexity
+			if (password.length < 6) {
+				return res.status(400).json({ error: "Password must be at least 6 characters long" });
+			}
+			// Hash the new password
+			const hashedPassword = await bcrypt.hash(password, 10);
+			user.password = hashedPassword;
+		}
+		// Similarly, validate and update other fields like address, email, profileImage, etc.
+
+		// Save the updated user
 		await user.save();
-		res.send("User updated");
-	} catch (err) {
-		console.error(err);
-		res.status(500).send("Server Error");
+
+		// Send a success response
+		return res.status(200).json({ message: "User updated successfully" });
+	} catch (error) {
+		// Log the error
+		console.error("Error updating user:", error);
+		// Send an error response
+		return res.status(500).json({ error: "Server error. Please try again later." });
 	}
 });
+
 app.get("/items/:id", async (req, res) => {
 	const items = await Item.findById(req.params.id);
 

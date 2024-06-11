@@ -55,6 +55,7 @@ function ItemDetails() {
 				<h1 className="text-3xl font-bold">{item.title}</h1>
 
 				<div className="text-green-600"> Available</div>
+				<p>posted on : {item.createdAt.substring(0, 10)}</p>
 				<p className="my-4 text-white	">{item.description}</p>
 				<div className="price text-3xl font-bold text-red-500">
 					RS. {item.price} <span className="text-gray-800 text-base">+12% GST Added</span>
