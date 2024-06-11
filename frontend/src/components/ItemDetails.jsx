@@ -55,7 +55,8 @@ function ItemDetails() {
 				<h1 className="text-3xl font-bold">{item.title}</h1>
 
 				<div className="text-green-600"> Available</div>
-				<p>posted on : {item.createdAt.substring(0, 10)}</p>
+				<p>Posted on : {item.createdAt.substring(0, 10)}</p>
+				<p>Last updated on : {item.updatedAt.substring(0, 10)}</p>
 				<p className="my-4 text-white	">{item.description}</p>
 				<div className="price text-3xl font-bold text-red-500">
 					RS. {item.price} <span className="text-gray-800 text-base">+12% GST Added</span>
@@ -68,16 +69,16 @@ function ItemDetails() {
 						<>
 							<div className="text-black">
 								<p>
-									Name: <span className="text-white">{user.username}</span>
+									Name: <span>{user.username}</span>
 								</p>
 								<p>
-									Contact: <span className="text-white">{user.contact}</span>
+									Contact: <span>{user.contact}</span>
 								</p>
 								<p>
-									Email id: <span className="text-white">{user.email}</span>
+									Email id: <span>{user.email}</span>
 								</p>
 								<p>
-									Address: <span className="text-white">{user.address}</span>
+									Address: <span>{user.address}</span>
 								</p>
 							</div>
 						</>

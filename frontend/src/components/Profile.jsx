@@ -37,24 +37,52 @@ function Profile() {
 	return (
 		<div className="container mx-auto p-4">
 			<h1 className="text-2xl font-bold pb-3">User Profile</h1>
-			<div className="flex justify-evenly w-1/3 border border-black p-5 rounded-lg ">
-				<div>
-					{profile.user.profileImage && (
-						<img
-							src={`http://localhost:5000/${profile.user.profileImage}`}
-							alt="Profile"
-							className="w-32 h-32 rounded-full mt-4"
-						/>
-					)}
+			<div className="flex justify-content">
+				<div className="flex justify-evenly lg:w-auto mr-40 border border-black p-5 rounded-lg ">
+					<div className="block mr-3">
+						{profile.user.profileImage && (
+							<img
+								src={`http://localhost:5000/${profile.user.profileImage}`}
+								alt="Profile"
+								className="w-32 h-32 rounded-full mt-4"
+							/>
+						)}
+					</div>
+					<div>
+						<h2 className="text-xl font-bold">{profile.user.username}</h2>
+						<p>Contact: {profile.user.contact}</p>
+						<p>Address: {profile.user.address}</p>
+						<p>Email: {profile.user.email}</p>
+						<Link
+							to={`/edit-profile`}
+							className="bg-blue-500 text-white px-4 py-2 rounded mt-4 inline-block"
+						>
+							Edit Profile
+						</Link>
+					</div>
 				</div>
-				<div>
-					<h2 className="text-xl font-bold">{profile.user.username}</h2>
-					<p>Contact: {profile.user.contact}</p>
-					<p>Address: {profile.user.address}</p>
-					<p>Email: {profile.user.email}</p>
-					<Link to={`/edit-profile`} className="bg-blue-500 text-white px-4 py-2 rounded mt-4 inline-block">
-						Edit Profile
-					</Link>
+				<div className="flex justify-evenly lg:w-auto border border-black p-5 rounded-lg ">
+					<div className="block mr-3">
+						{profile.user.profileImage && (
+							<img
+								src={`http://localhost:5000/${profile.user.profileImage}`}
+								alt="Profile"
+								className="w-32 h-32 rounded-full mt-4"
+							/>
+						)}
+					</div>
+					<div>
+						<h2 className="text-xl font-bold">{profile.user.username}</h2>
+						<p>Contact: {profile.user.contact}</p>
+						<p>Address: {profile.user.address}</p>
+						<p>Email: {profile.user.email}</p>
+						<Link
+							to={`/edit-profile`}
+							className="bg-blue-500 text-white px-4 py-2 rounded mt-4 inline-block"
+						>
+							Edit Profile
+						</Link>
+					</div>
 				</div>
 			</div>
 

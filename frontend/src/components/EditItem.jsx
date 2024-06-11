@@ -43,7 +43,7 @@ function EditItem() {
 		try {
 			await axios.put(`http://localhost:5000/items/${id}`, formData, {
 				headers: {
-					Authorization: `Bearer ${token}`, // Make sure the token is prefixed with 'Bearer '
+					Authorization: `${token}`, // Make sure the token is prefixed with 'Bearer '
 					"Content-Type": "multipart/form-data",
 				},
 			});
