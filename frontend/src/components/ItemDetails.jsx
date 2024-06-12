@@ -35,7 +35,7 @@ function ItemDetails() {
 	return (
 		<div className="container mx-auto p-6 flex flex-wrap">
 			<div className="image-section w-full md:w-1/2 p-4">
-				<img src={`http://localhost:5000/${mainImage}`} alt="Main Product" className="w-auto h-96 rounded" />
+				<img src={`http://localhost:5000/${mainImage}`} alt="Main Product" className=" w-auto h-96 rounded" />
 				<div className="thumbnails flex mt-4 space-x-4">
 					{item.images.map((image, index) => (
 						<img
@@ -57,7 +57,7 @@ function ItemDetails() {
 				<div className="text-green-600"> Available</div>
 				<p>Posted on : {item.createdAt.substring(0, 10)}</p>
 				<p>Last updated on : {item.updatedAt.substring(0, 10)}</p>
-				<p className="my-4 text-white	">{item.description}</p>
+				<p className="my-4">Description : {item.description}</p>
 				<div className="price text-3xl font-bold text-red-500">
 					RS. {item.price} <span className="text-gray-800 text-base">+12% GST Added</span>
 				</div>

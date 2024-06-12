@@ -11,7 +11,7 @@ function Login() {
 		e.preventDefault();
 		try {
 			const { data } = await axios.post("http://localhost:5000/login", { username, password });
-			console.log(data);
+
 			localStorage.setItem("token", data.token);
 			localStorage.setItem("userId", data._id); // Store userId in local storage
 			alert("Login successful");

@@ -52,15 +52,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// app.post("/register", async (req, res) => {
-// 	const { username, contact, address, email, password } = req.body;
-// 	const hashedPassword = await bcrypt.hash(password, 10);
-// 	const newUser = new User({ username, contact, address, email, password: hashedPassword });
-// 	await newUser.save();
-// 	res.status(201).send("User registered");
-// });
-
-// Use multer middleware to handle file uploads
 app.post("/register", upload.single("profileImage"), async (req, res) => {
 	const { username, contact, address, email, password } = req.body;
 	const profileImage = req.file ? req.file.path : ""; // Get the path of the uploaded file if exists
@@ -107,40 +98,54 @@ const authenticateToken = (req, res, next) => {
 // 	await newItem.save();
 // 	res.status(201).send("Item created");
 // });
-app.post("/items", authenticateToken, upload.array("images", 5), async (req, res) => {
-	// Updated to handle multiple images
+app.post("/items", authenticateToken, upload.array("images", 10), async (req, res) => {
+	try {
+		// Get the user information
+		const user = await User.findById(req.user.id);
 
-	const user = await User.findById(req.user.id);
+		// Extract the address and get the first word for city and state
+		const addressParts = user.address.match(/\b\w+\b/g);
+		const city = addressParts[0];
+		const state = addressParts[1];
 
-	// Extract the address and get the first word
-	const city = user.address.match(/\b\w+\b/g)[0];
-	const state = user.address.match(/\b\w+\b/g)[1];
+		// Get the geolocation data
+		const geoResponse = await geocodingClient
+			.forwardGeocode({
+				query: `${city},${state}`,
+				limit: 1,
+			})
+			.send();
 
-	let response = await geocodingClient
-		.forwardGeocode({
-			query: `${city},${state}`,
-			limit: 1,
-		})
-		.send();
+		// Extract data from the request
+		const { title, description, price, status, category } = req.body;
 
-	const { title, description, price, status, category } = req.body;
-	const images = req.files.map((file) => file.path);
-	const newItem = new Item({
-		title,
-		description,
-		price,
-		images,
-		user: req.user.id,
-		status,
-		category,
-	});
-	newItem.geometry = response.body.features[0].geometry;
+		// Get paths of the uploaded images
+		const images = req.files.map((file) => file.path);
 
-	await newItem.save();
-	console.log(newItem);
-	res.status(201).send("Item created");
+		// Create a new item with the provided data
+		const newItem = new Item({
+			title,
+			description,
+			price,
+			images,
+			user: req.user.id,
+			status,
+			category,
+		});
+
+		// Assign geolocation data to the item
+		newItem.geometry = geoResponse.body.features[0].geometry;
+
+		// Save the new item to the database
+		await newItem.save();
+
+		console.log(newItem);
+		res.status(201).send("Item created successfully");
+	} catch (error) {
+		console.error("Error creating item:", error);
+		res.status(500).json({ error: "Server error. Please try again later." });
+	}
 });
-
 //search functionality
 // server.js
 app.get("/items", async (req, res) => {
@@ -182,7 +187,8 @@ app.get("/users/:id", async (req, res) => {
 });
 
 // server.js new add profile editing
-app.put("/users/:id", authenticateToken, async (req, res) => {
+app.put("/users/:id", authenticateToken, upload.single("profileImage"), async (req, res) => {
+	console.log("working route edit user");
 	const { username, contact, password, address, email, profileImage } = req.body;
 
 	try {
@@ -191,6 +197,7 @@ app.put("/users/:id", authenticateToken, async (req, res) => {
 		if (!user) {
 			return res.status(404).json({ error: "User not found" });
 		}
+		console.log(user);
 
 		// Validate input fields
 		if (!username && !contact && !password && !address && !email && !profileImage) {
@@ -201,18 +208,17 @@ app.put("/users/:id", authenticateToken, async (req, res) => {
 		if (username) user.username = username;
 		if (contact) user.contact = contact;
 		if (password) {
-			// Validate password complexity
-			if (password.length < 6) {
-				return res.status(400).json({ error: "Password must be at least 6 characters long" });
-			}
 			// Hash the new password
 			const hashedPassword = await bcrypt.hash(password, 10);
 			user.password = hashedPassword;
 		}
 		// Similarly, validate and update other fields like address, email, profileImage, etc.
-
+		if (address) user.address = address;
+		if (email) user.email = email;
+		if (req.file) user.profileImage = req.file.path; // Save the filename in the database
 		// Save the updated user
 		await user.save();
+		console.log(user);
 
 		// Send a success response
 		return res.status(200).json({ message: "User updated successfully" });

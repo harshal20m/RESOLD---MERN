@@ -5,10 +5,11 @@ import axios from "axios";
 function Navbar() {
 	const [profileImage, setProfileImage] = useState("");
 	const [searchQuery, setSearchQuery] = useState("");
+	const [username, setUserName] = useState("");
 
 	const userId = localStorage.getItem("userId");
-	const navigate = useNavigate();
 	const token = localStorage.getItem("token");
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (userId) {
@@ -16,6 +17,7 @@ function Navbar() {
 				try {
 					const response = await axios.get(`http://localhost:5000/users/${userId}`);
 					setProfileImage(response.data.user.profileImage);
+					setUserName(response.data.user.username);
 				} catch (error) {
 					console.error(error);
 				}
@@ -38,69 +40,11 @@ function Navbar() {
 
 	return (
 		<>
-			<div className="navbar bg-neutral text-neutral-content">
-				<div className="flex-1">
-					<Link to="/">
-						<a className="btn btn-ghost text-xl">BOLX</a>
-					</Link>
-					<ul className="menu menu-horizontal px-1">
-						<li>
-							<a>Create Listings</a>
-						</li>
-					</ul>
-				</div>
-				<div className="flex gap-2">
-					<div className="form-control">
-						<input
-							type="text"
-							placeholder="Search items..."
-							value={searchQuery}
-							onChange={(e) => setSearchQuery(e.target.value)}
-							className="input text-black input-bordered w-96 "
-							required
-						/>
-					</div>
-					<div className="dropdown dropdown-end">
-						<div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-							<div className="w-10 rounded-full">
-								<img
-									alt="Tailwind CSS Navbar component"
-									src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-								/>
-							</div>
-						</div>
-						<ul
-							tabIndex={0}
-							className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
-						>
-							<li>
-								<a className="justify-between">
-									Profile
-									<span className="badge">New</span>
-								</a>
-							</li>
-							<li>
-								<a>Settings</a>
-							</li>
-							<li>
-								<a>Logout</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
 			<nav className="bg-gray-800 p-4">
 				<div className="container mx-auto flex justify-between items-center">
-					<div className="flex">
-						<Link to="/" className="text-white text-2xl">
-							OLX
-						</Link>
-						{token && (
-							<Link to="/new-item" className="ml-4 hidden sm:inline-block text-white">
-								Add Items
-							</Link>
-						)}
-					</div>
+					<Link to="/">
+						<div className="text-white text-2xl mr-3">OLX</div>
+					</Link>
 					<div className="flex items-center">
 						<form onSubmit={handleSearch} className="relative max-w-md mx-auto">
 							<label
@@ -130,7 +74,7 @@ function Navbar() {
 								<input
 									type="search"
 									id="default-search"
-									className="block w-full py-2.5 pl-10 pr-16 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+									className="block w-full xs:m-5 mr-3 py-2.5 pl-10 pr-16 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 									placeholder="Search items..."
 									value={searchQuery}
 									onChange={(e) => setSearchQuery(e.target.value)}
@@ -148,7 +92,46 @@ function Navbar() {
 					<div className="flex items-center">
 						{token && (
 							<>
-								<Link to={`/profile/${userId}`}>
+								<p className="text-white hidden sm:block">Hi , {username}</p>
+								<div className="dropdown dropdown-end hidden mobile:block ">
+									<div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+										<div className="w-10 rounded-full">
+											{profileImage ? (
+												<img alt="user" src={`http://localhost:5000/${profileImage}`} />
+											) : (
+												<img
+													src="https://www.pngarts.com/files/10/Default-Profile-Picture-Transparent-Image-337x279.png"
+													alt="user"
+													className="w-10 h-10 rounded-full"
+												/>
+											)}
+										</div>
+									</div>
+									<ul
+										tabIndex={0}
+										className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+									>
+										<li>
+											<Link to={`/profile/${userId}`}>
+												<a className="justify-between">
+													Profile
+													<span className="badge  ">New</span>
+												</a>
+											</Link>
+										</li>
+										<li>
+											{token && (
+												<Link to="/new-item">
+													<a>Create Add</a>
+												</Link>
+											)}
+										</li>
+										<li>
+											<a onClick={handleLogout}>Logout</a>
+										</li>
+									</ul>
+								</div>
+								{/* <Link to={`/profile/${userId}`}>
 									{profileImage ? (
 										<img
 											src={`http://localhost:5000/${profileImage}`}
@@ -165,7 +148,7 @@ function Navbar() {
 								</Link>
 								<button onClick={handleLogout} className="ml-4 text-white">
 									Logout
-								</button>
+								</button> */}
 							</>
 						)}
 						{!token && (
