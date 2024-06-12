@@ -1,6 +1,7 @@
 // ChartComponent.js
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
+import React from "react";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -20,6 +21,7 @@ const ChartComponent = ({ items }) => {
 
 	const options = {
 		responsive: true,
+		maintainAspectRatio: false,
 		plugins: {
 			legend: {
 				position: "top",
@@ -31,7 +33,13 @@ const ChartComponent = ({ items }) => {
 		},
 	};
 
-	return <Bar data={data} options={options} />;
+	return (
+		<div className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3 p-4">
+			<div className="relative h-64 sm:h-80 md:h-96">
+				<Bar data={data} options={options} />
+			</div>
+		</div>
+	);
 };
 
 export default ChartComponent;

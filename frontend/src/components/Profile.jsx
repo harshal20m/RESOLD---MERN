@@ -52,8 +52,9 @@ function Profile() {
 	}
 
 	return (
-		<div className="container mx-auto p-12">
-			<div className="flex justify-center 2xl:flex-col">
+		<div className="container mx-auto p-12 mobile:p-4">
+			<div className="flex justify-center items-center flex-col lg:flex-row">
+				<h3 className="text-center text-2xl font-bold mb-4">Profile</h3>
 				<div className="max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto bg-white shadow-xl rounded-lg text-gray-900">
 					<div className="rounded-t-lg h-32 overflow-hidden">
 						{profile.user.profileImage ? (
@@ -98,9 +99,12 @@ function Profile() {
 						</Link>
 					</div>
 				</div>
-				<div className=" w-2/3 p-6 block">
-					<h3 className="text-center text-2xl font-bold">Summary</h3>
-					<ChartComponent items={profile.items} />
+				<div className="w-full p-6 flex flex-col items-center">
+					<h3 className="text-center text-2xl font-bold mb-4">Summary</h3>
+
+					<div className="w-full flex justify-center">
+						<ChartComponent items={profile.items} />
+					</div>
 				</div>
 			</div>
 			<div className="flex justify-evenly mt-10">
