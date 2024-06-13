@@ -263,25 +263,55 @@ function Navbar() {
 									</div>
 									<ul
 										tabIndex={0}
-										className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+										className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-48"
 									>
 										<li>
-											<Link to={`/profile/${userId}`}>
+											<Link to={`/profile/${userId}`} className="hover:bg-blue-100">
 												<div className="justify-between">
 													Profile
-													<span className="badge">New</span>
+													<span className="badge ml-16  bg-blue-500 text-white text-xs">
+														New
+													</span>
 												</div>
 											</Link>
 										</li>
 										<li>
 											{token && (
-												<Link to="/new-item">
+												<Link to="/new-item" className="hover:bg-green-100">
 													<div>Create Ad</div>
 												</Link>
 											)}
 										</li>
 										<li>
-											<div onClick={handleLogout}>Logout</div>
+											<div
+												className="hover:bg-red-400"
+												onClick={() => document.getElementById("my_modal_1").showModal()}
+											>
+												{/* Open the modal using document.getElementById('ID').showModal() method */}
+												Logout
+												<dialog id="my_modal_1" className="modal">
+													<div className="modal-box">
+														<h3 className="font-bold text-lg">Logout</h3>
+														<p className="py-4">
+															Are you sure to Logout of your Account! , See you Soon!.....
+														</p>
+														<div className="modal-action">
+															<form method="dialog">
+																<button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+																	✕
+																</button>
+																{/* if there is a button in form, it will close the modal */}
+																<button
+																	className="btn hover:bg-red-400"
+																	onClick={handleLogout}
+																>
+																	Logout
+																</button>
+															</form>
+														</div>
+													</div>
+												</dialog>
+											</div>
 										</li>
 									</ul>
 								</div>

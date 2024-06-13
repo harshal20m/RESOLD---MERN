@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Login() {
 	const [username, setUsername] = useState("");
@@ -14,10 +15,10 @@ function Login() {
 
 			localStorage.setItem("token", data.token);
 			localStorage.setItem("userId", data._id); // Store userId in local storage
-			alert("Login successful");
+			toast.success("Login successful");
 			navigate("/");
 		} catch (error) {
-			alert("Invalid credentials");
+			toast("Invalid credentials");
 		}
 	};
 
