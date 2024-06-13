@@ -25,7 +25,7 @@ function Login() {
 	return (
 		<div className="container mx-auto p-4">
 			<h1 className="text-2xl font-bold">Login</h1>
-			<form onSubmit={handleSubmit} className="mt-4">
+			<form onSubmit={handleSubmit} className="mt-4 max-w-md mx-auto">
 				<input
 					type="text"
 					placeholder="Username"

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function EditItem() {
 	const { id } = useParams();
@@ -47,10 +48,11 @@ function EditItem() {
 					"Content-Type": "multipart/form-data",
 				},
 			});
+			toast.success("Item edited Successfully !");
 			navigate("/items");
 		} catch (error) {
 			console.error(error);
-			alert("Failed to update item");
+			toast.fail("Failed to update item");
 		}
 	};
 

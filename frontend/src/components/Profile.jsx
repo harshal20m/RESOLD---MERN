@@ -109,21 +109,21 @@ function Profile() {
 			</div>
 			<div className="flex justify-evenly mt-10">
 				<div className="border w-48  flex justify-center border-black p-2   rounded-lg ">
-					<h2>
-						<i className="bx bxs-message-dots text-4xl align-middle text-blue-500"></i> Total Adds :{" "}
-						<span className="text-2xl text-red-400 align-middle ">{profile.items.length}</span>
+					<h2 className="group">
+						<i className="bx bxs-message-dots text-4xl align-middle text-blue-500 bx-tada-hover"></i> Total
+						Adds : <span className="text-2xl text-red-400 align-middle ">{profile.items.length}</span>
 					</h2>
 				</div>
-				<div className="border w-48 flex justify-center border-black p-2   rounded-lg ">
+				<div className="border w-48 flex justify-center border-black p-2 rounded-lg ">
 					<h2>
-						<i className="bx bx-check-circle align-middle text-4xl text-green-400"></i> Total Sold :{" "}
-						{profile.items.length - profile.items.length + 1}
+						<i className="bx bx-check-circle align-middle text-4xl text-green-400 bx-tada-hover "></i> Total
+						Sold : {profile.items.length - profile.items.length + 1}
 					</h2>
 				</div>
 				<div className="border w-48 flex justify-center border-black p-2  rounded-lg ">
 					<h2>
-						<i className="bx bx-heart text-4xl align-middle mr-2 text-red-400"></i>Liked Items :{" "}
-						<span>{likes}</span>
+						<i className="bx bx-heart text-4xl align-middle mr-2 text-red-400 bx-tada-hover"></i>Liked Items
+						: <span>{likes}</span>
 					</h2>
 				</div>
 			</div>
@@ -136,7 +136,7 @@ function Profile() {
 								<h2 className="text-xl font-bold">{item.title}</h2>
 							</Link>
 							<p>{item.description}</p>
-							<p className="text-blue-500">Price: ${item.price}</p>
+							<p className="text-blue-500">Price: ₹ {item.price}</p>
 						</div>
 						<div>
 							<img
@@ -153,11 +153,33 @@ function Profile() {
 								Edit
 							</button>
 							<button
-								onClick={() => handleDelete(item._id)}
-								className="bg-red-500 text-white px-3 py-2 rounded-lg text-sm"
+								className="bg-red-500 px-3 py-2 rounded-lg text-sm text-white"
+								onClick={() => document.getElementById("my_modal_5").showModal()}
 							>
 								Delete
 							</button>
+							<dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+								<div className="modal-box bg-red-500 text-white">
+									<h3 className="font-bold text-lg">Delete</h3>
+									<p className="py-4">
+										Are you sure to delete current item. Changes will not be revert !
+									</p>
+									<div className="modal-action">
+										<form method="dialog">
+											{/* if there is a button in form, it will close the modal */}
+											<button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+												✕
+											</button>
+											<button
+												className="btn hover:bg-red-800 hover:text-white"
+												onClick={() => handleDelete(item._id)}
+											>
+												Delete
+											</button>
+										</form>
+									</div>
+								</div>
+							</dialog>
 						</div>
 					</div>
 				))}

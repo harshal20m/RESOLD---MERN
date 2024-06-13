@@ -46,7 +46,7 @@ function SearchResults() {
 							<p className="font-normal text-gray-700">{item.description}</p>
 							<p className="text-blue-500 mt-2">Price: ${item.price}</p>
 							<Link
-								to={`/item/${item._id}`}
+								to={`/items/${item._id}`}
 								className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800"
 							>
 								View Details

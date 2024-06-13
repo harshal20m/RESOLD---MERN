@@ -67,7 +67,7 @@ function Items() {
 									</h5>
 								</Link>
 								<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{item.description}</p>
-								<p className="text-blue-500 mb-4">Price: Rs. {item.price}/-</p>
+								<p className="text-blue-500 mb-4">Price: ₹ {item.price}/-</p>
 								<p className="text-gray-500 mb-4">
 									Seller: {item.user ? item.user.username : "Unknown"}
 								</p>
@@ -102,11 +102,34 @@ function Items() {
 												Edit
 											</button>
 											<button
-												onClick={() => handleDelete(item._id)}
-												className="bg-red-500 text-white px-3 py-2 rounded-lg text-sm"
+												className="bg-red-500 px-3 py-2 rounded-lg text-sm text-white"
+												onClick={() => document.getElementById("my_modal_5").showModal()}
 											>
 												Delete
 											</button>
+											<dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+												<div className="modal-box bg-red-500 text-white">
+													<h3 className="font-bold text-lg">Delete</h3>
+													<p className="py-4">
+														Are you sure to delete current item. Changes will not be revert
+														!
+													</p>
+													<div className="modal-action">
+														<form method="dialog">
+															{/* if there is a button in form, it will close the modal */}
+															<button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+																✕
+															</button>
+															<button
+																className="btn hover:bg-red-800 hover:text-white"
+																onClick={() => handleDelete(item._id)}
+															>
+																Delete
+															</button>
+														</form>
+													</div>
+												</div>
+											</dialog>
 										</div>
 									)}
 								</div>

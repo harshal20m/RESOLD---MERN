@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Signup() {
 	const [username, setUsername] = useState("");
@@ -35,6 +36,8 @@ function Signup() {
 		} catch (error) {
 			setMessage("Error registering user");
 		}
+		toast.success("Registration Successfull !");
+
 		navigate("/login");
 	};
 
@@ -45,7 +48,7 @@ function Signup() {
 	return (
 		<div className="container mx-auto p-4">
 			<h1 className="text-2xl font-bold">Signup</h1>
-			<form onSubmit={handleSubmit} className="mt-4">
+			<form onSubmit={handleSubmit} className="mt-4 max-w-md mx-auto">
 				<input
 					type="text"
 					placeholder="Username"
