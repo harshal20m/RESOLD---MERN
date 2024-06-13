@@ -34,7 +34,7 @@ const ChartComponent = ({ items }) => {
 	};
 
 	return (
-		<div className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3 p-4">
+		<div className="w-full sm:w-3/4 p-4">
 			<div className="relative h-64 sm:h-80 md:h-96">
 				<Bar data={data} options={options} />
 			</div>

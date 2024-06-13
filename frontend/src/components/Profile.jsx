@@ -52,10 +52,10 @@ function Profile() {
 	}
 
 	return (
-		<div className="container mx-auto p-12 mobile:p-4">
+		<div className="container mx-auto p-12 h-full mobile:p-4">
 			<div className="flex justify-center items-center flex-col lg:flex-row">
-				<h3 className="text-center text-2xl font-bold mb-4">Profile</h3>
 				<div className="max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto bg-white shadow-xl rounded-lg text-gray-900">
+					<h3 className="text-center text-2xl  font-bold mb-4">Profile</h3>
 					<div className="rounded-t-lg h-32 overflow-hidden">
 						{profile.user.profileImage ? (
 							<img
@@ -83,7 +83,7 @@ function Profile() {
 						)}
 					</div>
 					<div className="text-center mt-2">
-						<h2 className="font-semibold">{profile.user.username}</h2>
+						<h2 className="text-xl font-semibold">{profile.user.username}</h2>
 						<p className="text-gray-500">{profile.user.address}</p>
 					</div>
 					<p className="text-center text-gray-600 text-base pt-3 font-normal">
@@ -102,7 +102,7 @@ function Profile() {
 				<div className="w-full p-6 flex flex-col items-center">
 					<h3 className="text-center text-2xl font-bold mb-4">Summary</h3>
 
-					<div className="w-full flex justify-center">
+					<div className="w-full flex justify-center ">
 						<ChartComponent items={profile.items} />
 					</div>
 				</div>
