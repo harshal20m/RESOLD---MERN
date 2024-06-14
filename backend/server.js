@@ -90,14 +90,6 @@ const authenticateToken = (req, res, next) => {
 	});
 };
 
-// app.post("/items", authenticateToken, upload.array("images", 5), async (req, res) => {
-// 	// Updated to handle multiple images
-// 	const { title, description, price } = req.body;
-// 	const images = req.files.map((file) => file.path);
-// 	const newItem = new Item({ title, description, price, images, user: req.user.id });
-// 	await newItem.save();
-// 	res.status(201).send("Item created");
-// });
 app.post("/items", authenticateToken, upload.array("images", 10), async (req, res) => {
 	try {
 		// Get the user information
