@@ -238,7 +238,7 @@ app.get("/items/:id", async (req, res) => {
 	res.json({ userid, items });
 });
 
-app.put("/items/:id", authenticateToken, upload.array("images", 5), async (req, res) => {
+app.put("/items/:id", authenticateToken, upload.array("images", 10), async (req, res) => {
 	const { title, description, price } = req.body;
 	const item = await Item.findById(req.params.id);
 	if (!item) return res.status(404).send("Item not found");

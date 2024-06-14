@@ -2,8 +2,6 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-d
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
-import Signup from "./components/Signup";
-import Login from "./components/Login";
 import Items from "./components/Items";
 import Profile from "./components/Profile";
 import EditProfile from "./components/EditProfile";
@@ -12,6 +10,7 @@ import EditItem from "./components/EditItem";
 import ItemDetails from "./components/ItemDetails";
 import SearchResults from "./components/SearchResults";
 import ErrorBoundary from "./components/ErrorBoundary";
+import SignIn from "./components/SignIn";
 
 const ProtectedRoute = ({ children }) => {
 	const token = localStorage.getItem("token");
@@ -27,8 +26,7 @@ function App() {
 					<main className="flex-grow">
 						<Routes>
 							<Route path="/" element={<Home />} />
-							<Route path="/signup" element={<Signup />} />
-							<Route path="/login" element={<Login />} />
+							<Route path="/login" element={<SignIn />} />
 							<Route path="/items" element={<Items />} />
 							<Route path="/profile/:id" element={<Profile />} />
 							<Route path="/edit-profile" element={<EditProfile />} />

@@ -10,7 +10,7 @@ function EditItem() {
 	const [description, setDescription] = useState("");
 	const [price, setPrice] = useState("");
 	const [oldImage, setOldImage] = useState("");
-	const [newImage, setNewImage] = useState(null);
+	const [newImages, setNewImages] = useState([]);
 
 	useEffect(() => {
 		axios
@@ -26,7 +26,8 @@ function EditItem() {
 	}, [id]);
 
 	const handleImageChange = (e) => {
-		setNewImage(e.target.files[0]);
+		const files = Array.from(e.target.files);
+		setNewImages(files);
 	};
 
 	const handleSubmit = async (e) => {
@@ -37,11 +38,13 @@ function EditItem() {
 		formData.append("title", title);
 		formData.append("description", description);
 		formData.append("price", price);
-		if (newImage) {
-			formData.append("images", newImage); // Append new image if selected
-		}
+		newImages.forEach((image) => {
+			formData.append("images", image); // Append each selected image
+		});
 
 		try {
+			const userId = localStorage.getItem("userId");
+
 			await axios.put(`http://localhost:5000/items/${id}`, formData, {
 				headers: {
 					Authorization: `${token}`, // Make sure the token is prefixed with 'Bearer '
@@ -49,10 +52,10 @@ function EditItem() {
 				},
 			});
 			toast.success("Item edited Successfully !");
-			navigate("/items");
+			navigate(`/profile/${userId}`);
 		} catch (error) {
 			console.error(error);
-			toast.fail("Failed to update item");
+			toast.error("Failed to update item");
 		}
 	};
 
@@ -101,8 +104,21 @@ function EditItem() {
 					)}
 				</div>
 				<div className="mb-4">
-					<label className="block text-gray-700">New Image</label>
-					<input type="file" onChange={handleImageChange} className="border p-2 w-full" />
+					<label className="block text-gray-700">New Images</label>
+					<input type="file" onChange={handleImageChange} multiple className="border p-2 w-full" />
+				</div>
+				<div className="mb-4">
+					<label className="block text-gray-700">Image Previews</label>
+					<div className="flex flex-wrap">
+						{newImages.map((image, index) => (
+							<img
+								key={index}
+								src={URL.createObjectURL(image)}
+								alt={`New Preview ${index}`}
+								className="w-32 h-32 object-cover mb-2 mr-2"
+							/>
+						))}
+					</div>
 				</div>
 				<button type="submit" className="bg-blue-500 text-white p-2 mt-4">
 					Update Item

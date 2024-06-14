@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
 	email: { type: String, required: true },
 	password: { type: String, required: true },
 	profileImage: { type: String }, // Added profile image field
+	likedItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item" }],
 });
 
 module.exports = mongoose.model("User", userSchema);

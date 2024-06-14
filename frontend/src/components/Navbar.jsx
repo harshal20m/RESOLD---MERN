@@ -169,9 +169,7 @@ function Navbar() {
 								<Link to="/new-item" className="  text-white">
 									<div>Create Ad</div>
 								</Link>
-								<Link to="/signup" className="ml-4 text-white">
-									Signup
-								</Link>
+
 								<Link to="/login" className="ml-4 text-white">
 									Login
 								</Link>
