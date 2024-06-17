@@ -36,7 +36,7 @@ function NewItem() {
 		});
 		toast.success("Add Posted Successfully !");
 
-		navigate("/items");
+		navigate("/");
 	};
 
 	const handleImageChange = (e) => {
@@ -48,15 +48,15 @@ function NewItem() {
 	};
 
 	return (
-		<div className="container mx-auto p-4">
-			<h1 className="text-2xl font-bold">Create New Item</h1>
-			<form onSubmit={handleSubmit} className="max-w-md mx-auto">
+		<div className="w-full bg-gradient-180 p-4 pb-28">
+			<h1 className="text-2xl font-bold text-center text-white mb-4">Create New Item</h1>
+			<form onSubmit={handleSubmit} className="max-w-md mx-auto bg-inherit">
 				<input
 					type="text"
 					placeholder="Title"
 					value={title}
 					onChange={(e) => setTitle(e.target.value)}
-					className="border p-2 w-full rounded-lg"
+					className="border p-2 w-full rounded-lg bg-white border-slate-200 text-black"
 					required
 				/>
 				<input
@@ -64,7 +64,7 @@ function NewItem() {
 					placeholder="Description"
 					value={description}
 					onChange={(e) => setDescription(e.target.value)}
-					className="border p-2 w-full mt-4 rounded-lg"
+					className="border p-2 w-full mt-4 rounded-lg bg-white border-slate-200 text-black "
 					required
 				/>
 				<input
@@ -72,7 +72,7 @@ function NewItem() {
 					placeholder="Price"
 					value={price}
 					onChange={(e) => setPrice(e.target.value)}
-					className="border p-2 w-full mt-4 rounded-lg"
+					className="border p-2 w-full mt-4 rounded-lg bg-white border-slate-200 text-black"
 					required
 				/>
 
@@ -80,12 +80,12 @@ function NewItem() {
 					type="file"
 					multiple
 					onChange={handleImageChange}
-					className="border p-2 w-full mt-4 rounded-lg"
+					className="border p-2 w-full mt-4 rounded-lg bg-white border-slate-200 text-black"
 					required
 				/>
 
 				{/* Image Previews */}
-				<div className="mt-4 flex flex-wrap gap-2 rounded-lg">
+				<div className="mt-4 flex flex-wrap gap-2 rounded-lg ">
 					{imagePreviews.map((src, index) => (
 						<img
 							key={index}
@@ -99,7 +99,7 @@ function NewItem() {
 				<select
 					value={status}
 					onChange={(e) => setStatus(e.target.value)}
-					className="border p-2 w-full mt-4 rounded-lg"
+					className="border p-2 w-full mt-4 rounded-lg bg-white border-slate-200 text-black"
 				>
 					<option value="available">Available</option>
 					<option value="unavailable">Unavailable</option>
@@ -107,7 +107,7 @@ function NewItem() {
 				<select
 					value={category}
 					onChange={(e) => setCategory(e.target.value)}
-					className="border p-2 w-full mt-4 rounded-lg"
+					className="border p-2 w-full mt-4 rounded-lg bg-white border-slate-200 text-black"
 				>
 					<option value="Electronics">Electronics</option>
 					<option value="Home Appliances">Home Appliances</option>
@@ -122,7 +122,7 @@ function NewItem() {
 					<option value="Books & Media">Books & Media</option>
 					<option value="Furniture">Furniture</option>
 				</select>
-				<button type="submit" className="bg-blue-500 text-white p-2 mt-4 rounded-lg">
+				<button type="submit" className="bg-blue-700 text-white p-2 mt-4 rounded-lg">
 					Create Item
 				</button>
 			</form>

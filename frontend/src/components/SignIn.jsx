@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const SignIn = () => {
-	const [isHovered, setIsHovered] = useState(true);
+	const [isHovered, setIsHovered] = useState(false);
 	const [isLoginForm, setIsLoginForm] = useState(true);
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
@@ -192,7 +192,7 @@ const SignIn = () => {
 									type="email"
 									id="email"
 									className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full py-2.5 px-4"
-									placeholder=" "
+									placeholder=""
 									required
 									value={email}
 									onChange={(e) => setEmail(e.target.value)}

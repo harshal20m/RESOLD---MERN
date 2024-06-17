@@ -167,7 +167,10 @@ function Navbar() {
 						{!token && (
 							<>
 								<Link to="/new-item" className="  text-white">
-									<div>Create Ad</div>
+									<div>
+										<p className="hidden sm:block">Create add</p>
+										<i className="bx bx-plus hidden xs:block"></i>
+									</div>
 								</Link>
 
 								<Link to="/login" className="ml-4 text-white">

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -20,7 +20,7 @@ const MapComponent = ({ coordinates }) => {
 		return () => map.remove();
 	}, [coordinates]);
 
-	return <div id="map" ref={mapContainerRef} style={{ width: "100%", height: "400px" }} />;
+	return <div id="map" ref={mapContainerRef} style={{ width: "100%", height: "400px", borderRadius: "1rem" }} />;
 };
 
 export default MapComponent;

@@ -67,8 +67,8 @@ function EditProfile() {
 	};
 
 	return (
-		<div className="container mx-auto p-4">
-			<h1 className="text-2xl font-bold mb-4">Edit Profile</h1>
+		<div className="w-full bg-gradient-180 mx-auto p-4">
+			<h1 className="text-2xl font-bold mb-4 text-center text-white">Edit Profile</h1>
 			<form onSubmit={handleSubmit} className="max-w-md mx-auto">
 				<div className="mb-4">
 					<label className="block text-gray-700">Username</label>
@@ -76,7 +76,7 @@ function EditProfile() {
 						type="text"
 						value={username}
 						onChange={(e) => setUsername(e.target.value)}
-						className="w-full p-2 border border-gray-300 rounded"
+						className="border p-2 w-full rounded-lg bg-white border-slate-200 text-black"
 					/>
 				</div>
 				<div className="mb-4">
@@ -85,7 +85,7 @@ function EditProfile() {
 						type="text"
 						value={contact}
 						onChange={(e) => setContact(e.target.value)}
-						className="w-full p-2 border border-gray-300 rounded"
+						className="border p-2 w-full rounded-lg bg-white border-slate-200 text-black"
 					/>
 				</div>
 				<div className="mb-4">
@@ -94,7 +94,7 @@ function EditProfile() {
 						type="text"
 						value={address}
 						onChange={(e) => setAddress(e.target.value)}
-						className="w-full p-2 border border-gray-300 rounded"
+						className="border p-2 w-full rounded-lg bg-white border-slate-200 text-black"
 					/>
 				</div>
 				<div className="mb-4">
@@ -103,7 +103,7 @@ function EditProfile() {
 						type="email"
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
-						className="w-full p-2 border border-gray-300 rounded"
+						className="border p-2 w-full rounded-lg bg-white border-slate-200 text-black"
 					/>
 				</div>
 				<div className="mb-4">
@@ -112,17 +112,23 @@ function EditProfile() {
 						type="password"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
-						className="w-full p-2 border border-gray-300 rounded"
+						className="border p-2 w-full rounded-lg bg-white border-slate-200 text-black"
 						placeholder="Leave blank to keep current password"
 					/>
 				</div>
 				<div className="mb-4">
 					<label className="block text-gray-700">Profile Image</label>
-					{previewImage && <img className="h-36 w-36 mb-2" src={previewImage} alt="Profile Preview" />}
+					{previewImage && (
+						<img
+							className="h-36 w-36 mb-2 border rounded-lg bg-white border-slate-200 text-black"
+							src={previewImage}
+							alt="Profile Preview"
+						/>
+					)}
 					<input
 						type="file"
 						onChange={handleFileChange}
-						className="w-full p-2 border border-gray-300 rounded"
+						className="border p-2 w-full rounded-lg bg-white border-slate-200 text-black"
 					/>
 				</div>
 				<button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">

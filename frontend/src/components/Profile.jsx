@@ -52,9 +52,9 @@ function Profile() {
 	}
 
 	return (
-		<div className="container mx-auto p-12 h-full mobile:p-4">
-			<div className="flex justify-center items-center flex-col lg:flex-row">
-				<div className="max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto bg-white shadow-xl rounded-lg text-gray-900">
+		<div className=" bg-gradient-180 w-full mx-auto p-12 h-full mobile:p-4">
+			<div className="container mx-auto flex justify-between items-center flex-col lg:flex-row">
+				<div className="bg-gradient-180 max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto  shadow-xl rounded-lg text-gray-900">
 					<h3 className="text-center text-2xl  font-bold mb-4">Profile</h3>
 					<div className="rounded-t-lg h-32 overflow-hidden">
 						{profile.user.profileImage ? (
@@ -84,9 +84,9 @@ function Profile() {
 					</div>
 					<div className="text-center mt-2">
 						<h2 className="text-xl font-semibold">{profile.user.username}</h2>
-						<p className="text-gray-500">{profile.user.address}</p>
+						<p className="text-white">{profile.user.address}</p>
 					</div>
-					<p className="text-center text-gray-600 text-base pt-3 font-normal">
+					<p className="text-center text-white text-base pt-3 font-normal">
 						Contact : {profile.user.contact} <br />
 						Email : {profile.user.email}
 					</p>
@@ -100,37 +100,41 @@ function Profile() {
 					</div>
 				</div>
 				<div className="w-full p-6 flex flex-col items-center">
-					<h3 className="text-center text-2xl font-bold mb-4">Summary</h3>
+					<h3 className="text-center text-black text-2xl font-bold ">Summary</h3>
 
 					<div className="w-full flex justify-center ">
 						<ChartComponent items={profile.items} />
 					</div>
 				</div>
 			</div>
-			<div className="flex justify-evenly mt-10">
-				<div className="border w-48  flex justify-center border-black p-2   rounded-lg ">
+			<div className="flex justify-evenly mt-10  text-black">
+				<div className="border w-48  flex justify-center border-slate-400 bg-gradient-150 p-2 rounded-lg ">
 					<h2 className="group">
-						<i className="bx bxs-message-dots text-4xl align-middle text-blue-500 bx-tada-hover"></i> Total
-						Adds : <span className="text-2xl text-red-400 align-middle ">{profile.items.length}</span>
+						<i className="bx bxs-message-dots text-4xl align-middle text-blue-900 bx-tada-hover"></i> Total
+						Adds : <span className="text-2xl  align-middle ">{profile.items.length}</span>
 					</h2>
 				</div>
-				<div className="border w-48 flex justify-center border-black p-2 rounded-lg ">
+				<div className="border w-48 ml-3 flex justify-center    border-slate-400 bg-gradient-150 p-2 rounded-lg ">
 					<h2>
-						<i className="bx bx-check-circle align-middle text-4xl text-green-400 bx-tada-hover "></i> Total
-						Sold : {profile.items.length - profile.items.length + 1}
+						<i className="bx bxs-check-circle align-middle text-4xl text-green-600 bx-tada-hover "></i>{" "}
+						Total Sold :{" "}
+						<span className="text-2xl  ">{profile.items.length - profile.items.length + 1}</span>
 					</h2>
 				</div>
-				<div className="border w-48 flex justify-center border-black p-2  rounded-lg ">
+				<div className="border w-48 ml-3 flex justify-center   p-2  border-slate-400 bg-gradient-150 rounded-lg ">
 					<h2>
-						<i className="bx bx-heart text-4xl align-middle mr-2 text-red-400 bx-tada-hover"></i>Liked Items
-						: <span>{likes}</span>
+						<i className="bx bxs-heart text-4xl align-middle mr-2 text-red-700 bx-tada-hover"></i>Liked
+						Items : <span className=" text-2xl"> {likes}</span>
 					</h2>
 				</div>
 			</div>
-			<h3 className="text-lg font-bold mt-8">Your Adds</h3>
-			<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+			<h3 className="text-2xl text-black text-center font-bold mt-8">Your Adds</h3>
+			<div className="grid mx-auto grid-cols-1 justify-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mt-4 text-black">
 				{profile.items.map((item) => (
-					<div key={item._id} className="flex flex-col justify-between border p-4 rounded-lg">
+					<div
+						key={item._id}
+						className="bg-gradient-150 mx-auto w-72 flex flex-col justify-between border p-4 gap-3 rounded-lg"
+					>
 						<div>
 							<Link to={`/items/${item._id}`}>
 								<h2 className="text-xl font-bold">{item.title}</h2>
@@ -148,12 +152,12 @@ function Profile() {
 						<div className="flex space-x-2 pt-4">
 							<button
 								onClick={() => handleEdit(item._id)}
-								className="bg-yellow-500 text-white px-3 py-2 rounded-lg text-sm"
+								className="bg-yellow-500 text-white px-3 py-2   text-sm rounded-xl"
 							>
 								Edit
 							</button>
 							<button
-								className="bg-red-500 px-3 py-2 rounded-lg text-sm text-white"
+								className="bg-red-500 px-3 py-2 rounded-xl text-sm text-white"
 								onClick={() => document.getElementById("my_modal_5").showModal()}
 							>
 								Delete

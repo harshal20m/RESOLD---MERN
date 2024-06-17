@@ -35,8 +35,8 @@ const ChartComponent = ({ items }) => {
 
 	return (
 		<div className="w-full sm:w-3/4 p-4">
-			<div className="relative h-64 sm:h-80 md:h-96">
-				<Bar data={data} options={options} />
+			<div className="relative text-black dark:text-white h-64 sm:h-80 md:h-96">
+				<Bar data={data} options={options} style={{ backgroundColor: "white", borderRadius: "1rem" }} />
 			</div>
 		</div>
 	);

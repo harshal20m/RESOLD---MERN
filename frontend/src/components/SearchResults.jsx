@@ -28,12 +28,17 @@ function SearchResults() {
 	}, [query]);
 
 	return (
-		<div className="container mx-auto p-4">
-			<h1 className="text-2xl font-bold mb-4">Search Results</h1>
-			{items.length === 0 && <p>No items found</p>}
+		<div className="bg-gradient-180 max-h-screen h-[65vh] mx-auto p-4 ">
+			{items.length === 0 ? (
+				<p className="text-white absolute inset-96 flex items-center justify-center text-3xl pb-24">
+					No items found
+				</p>
+			) : (
+				<h1 className="text-2xl font-bold mb-4 text-black">Search Results for {query}</h1>
+			)}
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 				{items.map((item) => (
-					<div key={item._id} className="max-w-sm bg-white border border-gray-200 rounded-lg shadow">
+					<div key={item._id} className="max-w-sm  bg-gradient-180  rounded-lg shadow">
 						{item.images.length > 0 && (
 							<img
 								src={`http://localhost:5000/${item.images[0]}`}
@@ -42,9 +47,10 @@ function SearchResults() {
 							/>
 						)}
 						<div className="p-5">
-							<h5 className="text-2xl font-bold tracking-tight text-gray-900">{item.title}</h5>
-							<p className="font-normal text-gray-700">{item.description}</p>
-							<p className="text-blue-500 mt-2">Price: ${item.price}</p>
+							<h5 className="text-2xl font-bold tracking-tight text-white ">{item.title}</h5>
+							<p className="font-normal text-black">{item.description}</p>
+							<p className="text-white mt-2">Price: ₹ {item.price}</p>
+							<p className="text-white mt-2 mb-2">Seller : {item.user.username}</p>
 							<Link
 								to={`/items/${item._id}`}
 								className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800"

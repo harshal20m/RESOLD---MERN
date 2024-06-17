@@ -231,7 +231,7 @@ app.get("/items/:id", async (req, res) => {
 });
 
 app.put("/items/:id", authenticateToken, upload.array("images", 10), async (req, res) => {
-	const { title, description, price } = req.body;
+	const { title, description, price, status } = req.body;
 	const item = await Item.findById(req.params.id);
 	if (!item) return res.status(404).send("Item not found");
 	if (item.user.toString() !== req.user.id) return res.sendStatus(403);
@@ -239,6 +239,8 @@ app.put("/items/:id", authenticateToken, upload.array("images", 10), async (req,
 	item.title = title;
 	item.description = description;
 	item.price = price;
+	item.status = status;
+
 	if (req.files.length > 0) {
 		const images = req.files.map((file) => file.path);
 		item.images = images; // Replace existing images with new images

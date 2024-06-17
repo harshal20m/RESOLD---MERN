@@ -21,7 +21,7 @@ function App() {
 	return (
 		<ErrorBoundary>
 			<Router>
-				<div className="flex flex-col dark:bg-gray-700 min-h-screen">
+				<div className="flex flex-col min-h-screen h-full w-full">
 					<Navbar />
 					<main className="flex-grow">
 						<Routes>

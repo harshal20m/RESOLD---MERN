@@ -11,6 +11,7 @@ function EditItem() {
 	const [price, setPrice] = useState("");
 	const [oldImage, setOldImage] = useState("");
 	const [newImages, setNewImages] = useState([]);
+	const [status, setStatus] = useState("available");
 
 	useEffect(() => {
 		axios
@@ -38,6 +39,7 @@ function EditItem() {
 		formData.append("title", title);
 		formData.append("description", description);
 		formData.append("price", price);
+		formData.append("status", status);
 		newImages.forEach((image) => {
 			formData.append("images", image); // Append each selected image
 		});
@@ -60,9 +62,9 @@ function EditItem() {
 	};
 
 	return (
-		<div className="container mx-auto p-4">
-			<h1 className="text-2xl font-bold">Edit Item</h1>
-			<form onSubmit={handleSubmit} className="mt-4">
+		<div className="w-full bg-gradient-180 mx-auto p-4">
+			<h1 className="text-2xl font-bold text-white text-center">Edit Item</h1>
+			<form onSubmit={handleSubmit} className="max-w-md mx-auto bg-inherit">
 				<div className="mb-4">
 					<label className="block text-gray-700">Title</label>
 					<input
@@ -70,7 +72,7 @@ function EditItem() {
 						placeholder="Title"
 						value={title}
 						onChange={(e) => setTitle(e.target.value)}
-						className="border p-2 w-full"
+						className="border p-2 w-full rounded-lg bg-white border-slate-200 text-black"
 					/>
 				</div>
 				<div className="mb-4">
@@ -80,7 +82,7 @@ function EditItem() {
 						placeholder="Description"
 						value={description}
 						onChange={(e) => setDescription(e.target.value)}
-						className="border p-2 w-full"
+						className="border p-2 w-full rounded-lg bg-white border-slate-200 text-black"
 					/>
 				</div>
 				<div className="mb-4">
@@ -90,8 +92,19 @@ function EditItem() {
 						placeholder="Price"
 						value={price}
 						onChange={(e) => setPrice(e.target.value)}
-						className="border p-2 w-full"
+						className="border p-2 w-full rounded-lg bg-white border-slate-200 text-black"
 					/>
+				</div>
+				<div className="mb-4">
+					<label className="block text-gray-700">Status</label>
+					<select
+						value={status}
+						onChange={(e) => setStatus(e.target.value)}
+						className="border p-2 w-full rounded-lg bg-white border-slate-200 text-black"
+					>
+						<option value="available">Available</option>
+						<option value="unavailable">Unavailable</option>
+					</select>
 				</div>
 				<div className="mb-4">
 					<label className="block text-gray-700">Old Image</label>
@@ -99,13 +112,18 @@ function EditItem() {
 						<img
 							src={`http://localhost:5000/${oldImage}`}
 							alt="Old"
-							className="w-32 h-32 object-cover mb-2"
+							className="w-32 h-32 object-cover mb-2 border p-2 rounded-lg bg-white border-slate-200 text-black"
 						/>
 					)}
 				</div>
 				<div className="mb-4">
 					<label className="block text-gray-700">New Images</label>
-					<input type="file" onChange={handleImageChange} multiple className="border p-2 w-full" />
+					<input
+						type="file"
+						onChange={handleImageChange}
+						multiple
+						className="border p-2 w-full rounded-lg bg-white border-slate-200 text-black"
+					/>
 				</div>
 				<div className="mb-4">
 					<label className="block text-gray-700">Image Previews</label>
@@ -115,7 +133,7 @@ function EditItem() {
 								key={index}
 								src={URL.createObjectURL(image)}
 								alt={`New Preview ${index}`}
-								className="w-32 h-32 object-cover mb-2 mr-2"
+								className="w-32 h-32 object-cover mb-2 mr-2 border p-2   rounded-lg bg-white border-slate-200 text-black"
 							/>
 						))}
 					</div>
