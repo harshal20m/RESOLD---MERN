@@ -63,7 +63,13 @@ function EditItem() {
 
 	return (
 		<div className="w-full bg-gradient-180 mx-auto p-4">
-			<h1 className="text-2xl font-bold text-white text-center">Edit Item</h1>
+			<h1 className="text-2xl font-bold text-white text-center">
+				Edit{" "}
+				<span className="text-white font-bold text-2xl ">
+					RES<span className="text-red-500">OLD</span>
+				</span>{" "}
+				Add
+			</h1>
 			<form onSubmit={handleSubmit} className="max-w-md mx-auto bg-inherit">
 				<div className="mb-4">
 					<label className="block text-gray-700">Title</label>
@@ -126,7 +132,6 @@ function EditItem() {
 					/>
 				</div>
 				<div className="mb-4">
-					<label className="block text-gray-700">Image Previews</label>
 					<div className="flex flex-wrap">
 						{newImages.map((image, index) => (
 							<img
@@ -138,7 +143,7 @@ function EditItem() {
 						))}
 					</div>
 				</div>
-				<button type="submit" className="bg-blue-500 text-white p-2 mt-4">
+				<button type="submit" className="bg-blue-500 text-white p-2 mt-4 rounded-lg">
 					Update Item
 				</button>
 			</form>

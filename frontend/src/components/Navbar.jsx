@@ -42,9 +42,11 @@ function Navbar() {
 	return (
 		<>
 			<nav className="bg-gradient-navbar p-4">
-				<div className="container mx-auto flex justify-between items-center">
+				<div className="mx-auto flex justify-between items-center">
 					<Link to="/">
-						<div className="text-white text-2xl mr-3">OLX</div>
+						<div className="text-white font-bold text-2xl mr-3">
+							RES<span className="text-red-500">OLD</span>
+						</div>
 					</Link>
 					<div className="flex items-center">
 						<form onSubmit={handleSearch} className="relative max-w-md mx-auto">

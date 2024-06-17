@@ -5,8 +5,10 @@ function Hero({ scrollToItems }) {
 		<div>
 			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-16 text-center lg:pt-12 ">
 				<p className="mx-auto -mt-4 max-w-2xl text-lg tracking-tight text-slate-700 sm:mt-6">
-					Welcome to
-					<span className="border-b border-dotted border-slate-300"> BOLX</span>
+					Welcome to{" "}
+					<span className="text-white font-bold text-2xl mr-3">
+						RES<span className="text-red-500">OLD</span>
+					</span>
 				</p>
 
 				<h1 className="mx-auto max-w-4xl font-display text-5xl font-medium tracking-tight text-slate-900 sm:text-7xl">
@@ -28,8 +30,8 @@ function Hero({ scrollToItems }) {
 				</h1>
 
 				<p className="mx-auto mt-9 max-w-2xl text-lg tracking-tight text-slate-700 sm:mt-6">
-					<span className="inline-block">Bring functionalities of other apps</span>
-					<span className="inline-block">into your Notion workspaces.</span>
+					<span className="inline-block">Bring your used and goods</span>{" "}
+					<span className="inline-block text-black">and turn into money.</span>
 				</p>
 
 				<div className="mt-12 flex flex-col justify-center gap-y-5 sm:mt-10 sm:flex-row sm:gap-y-0 sm:gap-x-6">

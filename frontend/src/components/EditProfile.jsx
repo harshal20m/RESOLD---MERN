@@ -68,7 +68,13 @@ function EditProfile() {
 
 	return (
 		<div className="w-full bg-gradient-180 mx-auto p-4">
-			<h1 className="text-2xl font-bold mb-4 text-center text-white">Edit Profile</h1>
+			<h1 className="text-2xl font-bold mb-4 text-center text-black">
+				Edit{"  "}
+				<span className="text-white font-bold text-2xl">
+					RES<span className="text-red-500">OLD</span>{" "}
+				</span>
+				Profile
+			</h1>
 			<form onSubmit={handleSubmit} className="max-w-md mx-auto">
 				<div className="mb-4">
 					<label className="block text-gray-700">Username</label>

@@ -49,7 +49,7 @@ function NewItem() {
 
 	return (
 		<div className="w-full bg-gradient-180 p-4 pb-28">
-			<h1 className="text-2xl font-bold text-center text-white mb-4">Create New Item</h1>
+			<h1 className="text-2xl font-bold text-center text-white mb-4">Create New Add</h1>
 			<form onSubmit={handleSubmit} className="max-w-md mx-auto bg-inherit">
 				<input
 					type="text"
