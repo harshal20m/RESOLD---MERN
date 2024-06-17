@@ -41,7 +41,7 @@ function Navbar() {
 
 	return (
 		<>
-			<nav className="bg-gray-800 p-4">
+			<nav className="bg-gradient-navbar p-4">
 				<div className="container mx-auto flex justify-between items-center">
 					<Link to="/">
 						<div className="text-white text-2xl mr-3">OLX</div>
@@ -110,7 +110,7 @@ function Navbar() {
 									</div>
 									<ul
 										tabIndex={0}
-										className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-48"
+										className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-gradient-blue text-black rounded-box w-48"
 									>
 										<li>
 											<Link to={`/profile/${userId}`} className="hover:bg-blue-100">
