@@ -1,0 +1,15 @@
+{
+	"name": "resold",
+	"version": "1.0.0",
+	"description": "Its a resold platform for every one. To sell their old and used in working condition at suitable prices decided by their own.",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "concurrently \"npm start --prefix backend\" \"npm run dev --prefix frontend\""
+	},
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"concurrently": "^7.0.0"
+	}
+}

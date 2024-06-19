@@ -135,7 +135,7 @@ function ItemDetails() {
 					<p>Last updated on : {item.updatedAt.substring(0, 10)}</p>
 					<p className="my-4">Description : {item.description}</p>
 					<div className="price text-3xl font-bold text-gray-800">
-						RS. {item.price} <span className="text-gray-800 text-xs text-base">+12% GST Added</span>
+						RS. {item.price} <span className="text-gray-800 text-xs  ">+12% GST Added</span>
 					</div>
 					<button className="bg-blue-500 text-white px-6 py-3 rounded mt-4">Contact Seller</button>
 				</div>
