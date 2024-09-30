@@ -18,6 +18,7 @@ function Profile() {
 			try {
 				const response = await axios.get(`http://localhost:5000/users/${id}`);
 				setProfile(response.data);
+				console.log(response.data);
 			} catch (error) {
 				console.error(error);
 			}
@@ -60,7 +61,7 @@ function Profile() {
 						{profile.user.profileImage ? (
 							<img
 								className="object-cover object-top w-full"
-								src={`http://localhost:5000/${profile.user.profileImage}`}
+								src={profile.user.profileImage}
 								alt="Mountain"
 							/>
 						) : (
@@ -70,8 +71,8 @@ function Profile() {
 					<div className="mx-auto w-32 h-32 relative -mt-16 border-4 border-white rounded-full overflow-hidden">
 						{profile.user.profileImage ? (
 							<img
-								className="object-cover object-center h-32"
-								src={`http://localhost:5000/${profile.user.profileImage}`}
+								className="object-cover object-center h-auto"
+								src={profile.user.profileImage}
 								alt="Woman looking front"
 							/>
 						) : (
@@ -143,11 +144,7 @@ function Profile() {
 							<p className="text-blue-500">Price: ₹ {item.price}</p>
 						</div>
 						<div>
-							<img
-								src={`http://localhost:5000/${item.images[0]}`}
-								alt="Item"
-								className="w-32 h-32 rounded-lg mt-4"
-							/>
+							<img src={item.images[0].url} alt="Item" className="w-32 h-32 rounded-lg mt-4" />
 						</div>
 						<div className="flex space-x-2 pt-4">
 							<button

@@ -18,6 +18,7 @@ function Navbar() {
 				try {
 					const response = await axios.get(`http://localhost:5000/users/${userId}`);
 					setProfileImage(response.data.user.profileImage);
+					// console.log(response.data);
 					setUserName(response.data.user.username);
 				} catch (error) {
 					console.error(error);
@@ -100,7 +101,7 @@ function Navbar() {
 									<div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
 										<div className="w-10 rounded-full">
 											{profileImage ? (
-												<img alt="user" src={`http://localhost:5000/${profileImage}`} />
+												<img alt="user" src={profileImage} />
 											) : (
 												<img
 													src="https://www.pngarts.com/files/10/Default-Profile-Picture-Transparent-Image-337x279.png"

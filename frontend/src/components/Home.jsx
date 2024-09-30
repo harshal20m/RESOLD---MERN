@@ -1,17 +1,3 @@
-// import CategorySelector from "./CategorySelector";
-// import Items from "./Items";
-
-// function Home() {
-// 	return (
-// 		<div className=" ">
-// 			<CategorySelector />
-// 			<Items />
-// 		</div>
-// 	);
-// }
-
-// export default Home;
-
 import { useRef, useState } from "react";
 import CategorySelector from "./CategorySelector";
 import Items from "./Items";

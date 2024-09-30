@@ -21,7 +21,8 @@ function EditItem() {
 				setTitle(item.title || "");
 				setDescription(item.description || "");
 				setPrice(item.price || "");
-				setOldImage(item.images[0] || ""); // Assuming images is an array
+				setOldImage(item.images || []); // Ensure this is an array
+				console.log(item.images); // Verify the images structure
 			})
 			.catch((error) => console.error(error));
 	}, [id]);
@@ -113,13 +114,18 @@ function EditItem() {
 					</select>
 				</div>
 				<div className="mb-4">
-					<label className="block text-gray-700">Old Image</label>
-					{oldImage && (
-						<img
-							src={`http://localhost:5000/${oldImage}`}
-							alt="Old"
-							className="w-32 h-32 object-cover mb-2 border p-2 rounded-lg bg-white border-slate-200 text-black"
-						/>
+					<label className="block text-gray-700">Old Images</label>
+					{oldImage.length > 0 ? (
+						oldImage.map((image, index) => (
+							<img
+								key={index}
+								src={image.url}
+								alt={`Old Image ${index}`}
+								className="w-32 h-32 object-cover mb-2 border p-2 rounded-lg bg-white border-slate-200 text-black inline m-2"
+							/>
+						))
+					) : (
+						<p className="text-gray-500">No old images available.</p>
 					)}
 				</div>
 				<div className="mb-4">

@@ -21,7 +21,9 @@ function ItemDetails() {
 				const response = await axios.get(`http://localhost:5000/items/${id}`);
 				setItem(response.data.items);
 				setUser(response.data.userid);
-				setMainImage(response.data.items.images[0]);
+
+				// Set main image from Cloudinary URL
+				setMainImage(response.data.items.images[0].url);
 				setCoordinates(response.data.items.geometry.coordinates || "");
 			} catch (error) {
 				console.error(error);
@@ -49,8 +51,9 @@ function ItemDetails() {
 	return (
 		<div className="bg-gradient-180 w-full text-black mx-auto p-6 flex flex-wrap ">
 			<div className="image-section w-full md:w-1/2 p-4 border sm:border-none rounded-lg mb-3">
+				{/* Main image */}
 				<img
-					src={`http://localhost:5000/${mainImage}`}
+					src={mainImage} // Cloudinary image URL
 					alt="Main Product"
 					className="w-auto sm:h-96 rounded align-middle mx-auto"
 				/>
@@ -68,7 +71,7 @@ function ItemDetails() {
 								cursor: "pointer",
 							}}
 						>
-							<i className="bx bxs-left-arrow text-4xl   size-bold"></i>
+							<i className="bx bxs-left-arrow text-4xl size-bold"></i>
 						</div>
 					)}
 					<div
@@ -83,13 +86,14 @@ function ItemDetails() {
 						}}
 						onScroll={handleScroll}
 					>
+						{/* Thumbnails */}
 						{item.images.map((image, index) => (
 							<img
 								key={index}
-								src={`http://localhost:5000/${image}`}
+								src={image.url} // Cloudinary image URL for thumbnails
 								alt={`Thumbnail ${index + 1}`}
 								className="w-24 h-24 object-cover cursor-pointer rounded mx-1"
-								onClick={() => setMainImage(image)}
+								onClick={() => setMainImage(image.url)}
 							/>
 						))}
 					</div>
@@ -106,13 +110,13 @@ function ItemDetails() {
 								cursor: "pointer",
 							}}
 						>
-							<i className="bx bxs-right-arrow text-4xl   size-bold"></i>
+							<i className="bx bxs-right-arrow text-4xl size-bold"></i>
 						</div>
 					)}
 				</div>
 			</div>
 			<div
-				className="details-section bg-white bg-opacity-20   shadow-lg border border-cream rounded-lg w-full md:w-1/2 p-4 overflow-y-auto custom-scrollbar"
+				className="details-section bg-white bg-opacity-20 shadow-lg border border-cream rounded-lg w-full md:w-1/2 p-4 overflow-y-auto custom-scrollbar"
 				style={{ maxHeight: "75vh" }}
 			>
 				<div className="text-3xl text-black font-bold flex flex-col justify-between sm:flex-row">
@@ -121,12 +125,12 @@ function ItemDetails() {
 						<i className="bx bxs-badge-check text-blue-600 align-middle ml-2"></i>
 					</h1>
 					<p
-						className={`text-lg ${
+						className={`text-sm ${
 							item.status === "available" ? "text-green-600" : "text-red-600"
 						} capitalize`}
 					>
 						{item.status}
-						<i className="bx bxs-purchase-tag bx-flashing align-middle ml-2"></i>
+						<i className="bx bxs-purchase-tag bx-flashing align-middle ml-2 inline"></i>
 					</p>
 				</div>
 				<hr className="mt-3" />
@@ -135,7 +139,7 @@ function ItemDetails() {
 					<p>Last updated on : {item.updatedAt.substring(0, 10)}</p>
 					<p className="my-4">Description : {item.description}</p>
 					<div className="price text-3xl font-bold text-gray-800">
-						RS. {item.price} <span className="text-gray-800 text-xs  ">+12% GST Added</span>
+						RS. {item.price} <span className="text-gray-800 text-xs">+12% GST Added</span>
 					</div>
 					<button className="bg-blue-500 text-white px-6 py-3 rounded mt-4">Contact Seller</button>
 				</div>
@@ -146,22 +150,14 @@ function ItemDetails() {
 						Seller Information <i className="bx bxs-info-circle text-gray-600"></i>
 					</h2>
 					{user && (
-						<>
-							<div className="text-black">
-								<p className="mb-2">
-									Name: <span>{user.username}</span>
-								</p>
-								{/* <p>
-									Contact: <span>{user.contact}</span>
-								</p>
-								<p>
-									Email id: <span>{user.email}</span>
-								</p> */}
-								<p>
-									Address: <span>{user.address}</span>
-								</p>
-							</div>
-						</>
+						<div className="text-black">
+							<p className="mb-2">
+								Name: <span>{user.username}</span>
+							</p>
+							<p>
+								Address: <span>{user.address}</span>
+							</p>
+						</div>
 					)}
 					<hr className="mt-5" />
 					{coordinates && coordinates.length === 2 && (
@@ -174,7 +170,7 @@ function ItemDetails() {
 					)}
 				</div>
 				{item.user === localStorage.getItem("userId") && (
-					<div className="mt-6 ">
+					<div className="mt-6">
 						<AddImages itemId={item._id} />
 					</div>
 				)}

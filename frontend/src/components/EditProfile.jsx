@@ -22,7 +22,7 @@ function EditProfile() {
 			setAddress(response.data.user.address);
 			setEmail(response.data.user.email);
 			setProfileImage(response.data.user.profileImage);
-			setPreviewImage(`http://localhost:5000/${response.data.user.profileImage}`);
+			setPreviewImage(response.data.user.profileImage);
 		};
 
 		fetchUserData();

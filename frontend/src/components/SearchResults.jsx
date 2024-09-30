@@ -31,9 +31,7 @@ function SearchResults() {
 		<div className="bg-gradient-180 mx-auto p-4">
 			{items.length === 0 ? (
 				<>
-					<p className="text-white absolute inset-96 flex items-center justify-center text-3xl pb-24">
-						No items found
-					</p>
+					<p className="text-white mt-60 flex items-center justify-center text-3xl">No items found</p>
 					<div className="h-[57.5vh]"></div>
 				</>
 			) : (
@@ -44,7 +42,7 @@ function SearchResults() {
 					<div key={item._id} className="max-w-sm  bg-gradient-180 rounded-lg shadow">
 						{item.images.length > 0 && (
 							<img
-								src={`http://localhost:5000/${item.images[0]}`}
+								src={item.images[0].url}
 								alt={item.title}
 								className="w-full h-48 object-cover rounded-t-lg"
 							/>

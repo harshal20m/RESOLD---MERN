@@ -1,4 +1,4 @@
-// src/components/Footer.jsx
+import { Link } from "react-router-dom";
 function Footer() {
 	return (
 		<footer className="footer p-10 bg-base-200 text-base-content ">
@@ -11,7 +11,7 @@ function Footer() {
 			</nav>
 			<nav>
 				<h6 className="footer-title">Company</h6>
-				<a className="link link-hover">About us</a>
+				<Link to="/about">About us</Link>
 				<a className="link link-hover">Contact</a>
 				<a className="link link-hover">Jobs</a>
 				<a className="link link-hover">Press kit</a>

@@ -43,27 +43,27 @@ function Items() {
 	const userId = localStorage.getItem("userId"); // Get the user ID from local storage
 
 	return (
-		<div className="flex flex-col mx-auto  " id="items">
+		<div className="flex flex-col mx-auto" id="items">
 			<div className="container mx-auto p-4 flex flex-col">
 				<h1 className="text-2xl font-bold mb-4 text-center text-white">Items for Sale</h1>
-				<div className="grid mx-auto grid-cols-1 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 gap-6 ">
+				<div className="grid mx-auto grid-cols-1 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 gap-6">
 					{items.map((item) => (
 						<div
 							key={item._id}
-							className="max-w-xs  bg-gradient-180 w-96   rounded-lg  shadow  mb-5 bg-black  	 flex flex-col justify-between"
+							className="max-w-xs bg-gradient-180 w-96 rounded-lg shadow mb-5 bg-black flex flex-col justify-between"
 						>
 							<Link to={`/items/${item._id}`}>
 								{item.images.length > 0 && (
 									<img
 										className="rounded-t-lg w-full h-48 object-cover"
-										src={`http://localhost:5000/${item.images[0]}`}
+										src={item.images[0].url} // Use the Cloudinary image URL
 										alt={item.title}
 									/>
 								)}
 								<div className="p-5 flex flex-col">
 									<h5 className="mb-2 text-2xl font-bold tracking-tight text-white">{item.title}</h5>
 
-									<p className="mb-3 font-normal text-gray-900  ">{item.description}</p>
+									<p className="mb-3 font-normal text-gray-900">{item.description}</p>
 									<p className="text-white mb-4">Price: ₹ {item.price}/-</p>
 									<p className="text-white mb-4">
 										Seller: {item.user ? item.user.username : "Unknown"}
@@ -105,8 +105,8 @@ function Items() {
 													<div className="modal-box bg-red-500 text-white">
 														<h3 className="font-bold text-lg">Delete</h3>
 														<p className="py-4">
-															Are you sure to delete current item. Changes will not be
-															revert!
+															Are you sure you want to delete this item? Changes cannot be
+															reverted!
 														</p>
 														<div className="modal-action">
 															<form method="dialog">

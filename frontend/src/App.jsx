@@ -11,6 +11,7 @@ import ItemDetails from "./components/ItemDetails";
 import SearchResults from "./components/SearchResults";
 import ErrorBoundary from "./components/ErrorBoundary";
 import SignIn from "./components/SignIn";
+import AboutUs from "./components/AboutUs";
 
 const ProtectedRoute = ({ children }) => {
 	const token = localStorage.getItem("token");
@@ -48,6 +49,9 @@ function App() {
 							/>
 							<Route path="/items/:id" element={<ItemDetails />} />
 							<Route path="/search" element={<SearchResults />} />
+
+							{/* footer links here */}
+							<Route path="/about" element={<AboutUs />} />
 						</Routes>
 					</main>
 					<Footer />

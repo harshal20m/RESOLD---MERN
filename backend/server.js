@@ -10,20 +10,24 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const multer = require("multer");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const path = require("path");
+const cloudinary = require("cloudinary").v2;
+
+//database schemas
 const User = require("./models/User");
 const Item = require("./models/Item");
+const Chat = require("./models/Chat");
 
 //map box
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
-const mapToken = process.env.MAP_TOKEN;
+const mapToken = process.env.MAPBOX_ACCESS_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
-
-const Chat = require("./models/Chat");
 
 const app = express();
 const port = process.env.PORT || 5000;
 
+//middlewares
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -41,20 +45,37 @@ async function main() {
 	await mongoose.connect(dbURL);
 }
 
-const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, "uploads/");
-	},
-	filename: (req, file, cb) => {
-		cb(null, `${Date.now()}-${file.originalname}`);
+//using multer for local image storing mechanism now after , we will use cloudinary as a image database .
+// const storage = multer.diskStorage({
+// 	destination: (req, file, cb) => {
+// 		cb(null, "uploads/");
+// 	},
+// 	filename: (req, file, cb) => {
+// 		cb(null, `${Date.now()}-${file.originalname}`);
+// 	},
+// });
+
+// Configure Cloudinary
+cloudinary.config({
+	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Cloudinary storage configuration for Multer
+const storage = new CloudinaryStorage({
+	cloudinary: cloudinary,
+	params: {
+		folder: "uploads", // Optional folder name in Cloudinary
+		allowed_formats: ["jpeg", "png", "jpg"],
 	},
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage }); //this line need to be written for both local and online mode of image storing.
 
 app.post("/register", upload.single("profileImage"), async (req, res) => {
 	const { username, contact, address, email, password } = req.body;
-	const profileImage = req.file ? req.file.path : ""; // Get the path of the uploaded file if exists
+	const profileImage = req.file ? req.file.path : ""; // Get the path of the uploaded file if exists  // Cloudinary URL for the image
 	const hashedPassword = await bcrypt.hash(password, 10);
 	const newUser = new User({ username, contact, address, email, password: hashedPassword, profileImage });
 	await newUser.save();
@@ -89,18 +110,15 @@ const authenticateToken = (req, res, next) => {
 		next();
 	});
 };
-
+// Store the image URLs and public IDs
 app.post("/items", authenticateToken, upload.array("images", 10), async (req, res) => {
 	try {
-		// Get the user information
 		const user = await User.findById(req.user.id);
 
-		// Extract the address and get the first word for city and state
 		const addressParts = user.address.match(/\b\w+\b/g);
 		const city = addressParts[0];
 		const state = addressParts[1];
 
-		// Get the geolocation data
 		const geoResponse = await geocodingClient
 			.forwardGeocode({
 				query: `${city},${state}`,
@@ -108,13 +126,14 @@ app.post("/items", authenticateToken, upload.array("images", 10), async (req, re
 			})
 			.send();
 
-		// Extract data from the request
 		const { title, description, price, status, category } = req.body;
 
-		// Get paths of the uploaded images
-		const images = req.files.map((file) => file.path);
+		// Store Cloudinary URLs and public IDs
+		const images = req.files.map((file) => ({
+			url: file.path,
+			public_id: file.filename, // Store the public_id returned by Cloudinary
+		}));
 
-		// Create a new item with the provided data
 		const newItem = new Item({
 			title,
 			description,
@@ -125,10 +144,8 @@ app.post("/items", authenticateToken, upload.array("images", 10), async (req, re
 			category,
 		});
 
-		// Assign geolocation data to the item
 		newItem.geometry = geoResponse.body.features[0].geometry;
 
-		// Save the new item to the database
 		await newItem.save();
 
 		console.log(newItem);
@@ -222,6 +239,7 @@ app.put("/users/:id", authenticateToken, upload.single("profileImage"), async (r
 	}
 });
 
+//item show all
 app.get("/items/:id", async (req, res) => {
 	const items = await Item.findById(req.params.id);
 
@@ -230,23 +248,43 @@ app.get("/items/:id", async (req, res) => {
 	res.json({ userid, items });
 });
 
+//items edit
 app.put("/items/:id", authenticateToken, upload.array("images", 10), async (req, res) => {
 	const { title, description, price, status } = req.body;
 	const item = await Item.findById(req.params.id);
 	if (!item) return res.status(404).send("Item not found");
-	if (item.user.toString() !== req.user.id) return res.sendStatus(403);
+	if (item.user.toString() !== req.user.id) return res.sendStatus(403); // Ensure user owns the item
 
+	// Update item details
 	item.title = title;
 	item.description = description;
 	item.price = price;
 	item.status = status;
 
+	// Check if new images are uploaded
 	if (req.files.length > 0) {
-		const images = req.files.map((file) => file.path);
-		item.images = images; // Replace existing images with new images
+		try {
+			// Step 1: Delete the old images from Cloudinary
+			const deletePromises = item.images.map((image) => cloudinary.uploader.destroy(image.public_id));
+			await Promise.all(deletePromises);
+
+			// Step 2: Upload new images to Cloudinary
+			const newImages = req.files.map((file) => ({
+				url: file.path, // New Cloudinary URL
+				public_id: file.filename, // New Cloudinary public_id
+			}));
+
+			// Step 3: Replace the old images with the new ones in the database
+			item.images = newImages;
+		} catch (error) {
+			console.error("Error updating images:", error);
+			return res.status(500).json({ error: "Server error. Please try again later." });
+		}
 	}
+
+	// Save the updated item
 	await item.save();
-	res.send("Item updated");
+	res.send("Item updated successfully");
 });
 
 // server.js
@@ -266,15 +304,27 @@ app.put("/items/:id/add-images", authenticateToken, upload.array("images", 5), a
 	}
 });
 
+// Delete an item and its associated Cloudinary images
 app.delete("/items/:id", authenticateToken, async (req, res) => {
-	const item = await Item.findById(req.params.id);
-	if (item.user.toString() !== req.user.id) return res.sendStatus(403);
+	try {
+		const item = await Item.findById(req.params.id);
+		if (!item) return res.status(404).send("Item not found");
+		if (item.user.toString() !== req.user.id) return res.sendStatus(403);
 
-	await Item.findByIdAndDelete(req.params.id); // Use findByIdAndDelete instead of item.remove
-	res.send("Item deleted");
+		// Delete images from Cloudinary , this is a crucial step to maitain the image cloud database cost .
+		const deletePromises = item.images.map((image) => cloudinary.uploader.destroy(image.public_id));
+
+		await Promise.all(deletePromises); // Wait for all images to be deleted
+
+		// Remove the item from the database
+		await Item.findByIdAndDelete(req.params.id);
+
+		res.send("Item and associated images deleted");
+	} catch (error) {
+		console.error("Error deleting item:", error);
+		res.status(500).send("Server Error");
+	}
 });
-
-//chat functionality here
 
 app.listen(port, () => {
 	console.log(`Server running on port ${port}`);
