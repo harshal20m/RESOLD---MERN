@@ -53,7 +53,7 @@ function Items() {
 							className="max-w-xs bg-gradient-180 w-96 rounded-lg shadow mb-5 bg-black flex flex-col justify-between"
 						>
 							<Link to={`/items/${item._id}`}>
-								{item.images.length > 0 && (
+								{item.images && item.images.length > 0 && (
 									<img
 										className="rounded-t-lg w-full h-48 object-cover"
 										src={item.images[0].url} // Use the Cloudinary image URL

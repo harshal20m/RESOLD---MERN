@@ -1,4 +1,3 @@
-// models/Item.js
 const mongoose = require("mongoose");
 
 const itemSchema = new mongoose.Schema(
@@ -6,7 +5,13 @@ const itemSchema = new mongoose.Schema(
 		title: { type: String, required: true },
 		description: { type: String, required: true },
 		price: { type: Number, required: true },
-		images: [{ type: String }], // Changed to support multiple images
+		// Updated to store Cloudinary image details
+		images: [
+			{
+				url: { type: String, required: true }, // URL of the image
+				public_id: { type: String, required: true }, // Cloudinary public ID for easy management (e.g., deletion)
+			},
+		],
 		user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 		geometry: {
 			type: {
