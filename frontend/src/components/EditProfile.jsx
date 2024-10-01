@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -16,7 +16,7 @@ function EditProfile() {
 	useEffect(() => {
 		const fetchUserData = async () => {
 			const userId = localStorage.getItem("userId");
-			const response = await axios.get(`http://localhost:5000/users/${userId}`);
+			const response = await axiosInstance.get(`/users/${userId}`);
 			setUsername(response.data.user.username);
 			setContact(response.data.user.contact);
 			setAddress(response.data.user.address);
@@ -50,7 +50,7 @@ function EditProfile() {
 		}
 
 		try {
-			await axios.put(`http://localhost:5000/users/${userId}`, formData, {
+			await axiosInstance.put(`/users/${userId}`, formData, {
 				headers: {
 					Authorization: `${token}`,
 					"Content-Type": "multipart/form-data",

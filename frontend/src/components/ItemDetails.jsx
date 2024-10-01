@@ -1,9 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../api";
 import AddImages from "./AddImages";
 import "./css/itemdetails.css";
 import MapComponent from "./MapComponent";
+import ContactSellerPopup from "./ContactSellerPopup";
 
 function ItemDetails() {
 	const { id } = useParams();
@@ -14,11 +15,12 @@ function ItemDetails() {
 	const [showLeftArrow, setShowLeftArrow] = useState("");
 	const [showRightArrow, setShowRightArrow] = useState("true");
 	const thumbnailsRef = useRef(null);
+	const [showPopup, setShowPopup] = useState(false);
 
 	useEffect(() => {
 		const fetchItem = async () => {
 			try {
-				const response = await axios.get(`http://localhost:5000/items/${id}`);
+				const response = await axiosInstance.get(`/items/${id}`);
 				setItem(response.data.items);
 				setUser(response.data.userid);
 
@@ -141,7 +143,12 @@ function ItemDetails() {
 					<div className="price text-3xl font-bold text-gray-800">
 						RS. {item.price} <span className="text-gray-800 text-xs">+12% GST Added</span>
 					</div>
-					<button className="bg-blue-500 text-white px-6 py-3 rounded mt-4">Contact Seller</button>
+					<button
+						className="bg-blue-500 text-white px-6 py-3 rounded mt-4"
+						onClick={() => setShowPopup(true)}
+					>
+						Contact Seller
+					</button>
 				</div>
 				<hr className="mt-5" />
 
@@ -175,6 +182,7 @@ function ItemDetails() {
 					</div>
 				)}
 			</div>
+			{showPopup && <ContactSellerPopup user={user} onClose={() => setShowPopup(false)} />}
 		</div>
 	);
 }

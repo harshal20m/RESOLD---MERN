@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../api";
+
 import { toast } from "react-toastify";
 
 function EditItem() {
@@ -14,15 +15,14 @@ function EditItem() {
 	const [status, setStatus] = useState("available");
 
 	useEffect(() => {
-		axios
-			.get(`http://localhost:5000/items/${id}`)
+		axiosInstance
+			.get(`/items/${id}`)
 			.then((response) => {
 				const item = response.data.items;
 				setTitle(item.title || "");
 				setDescription(item.description || "");
 				setPrice(item.price || "");
 				setOldImage(item.images || []); // Ensure this is an array
-				console.log(item.images); // Verify the images structure
 			})
 			.catch((error) => console.error(error));
 	}, [id]);
@@ -48,7 +48,7 @@ function EditItem() {
 		try {
 			const userId = localStorage.getItem("userId");
 
-			await axios.put(`http://localhost:5000/items/${id}`, formData, {
+			await axiosInstance.put(`/items/${id}`, formData, {
 				headers: {
 					Authorization: `${token}`, // Make sure the token is prefixed with 'Bearer '
 					"Content-Type": "multipart/form-data",

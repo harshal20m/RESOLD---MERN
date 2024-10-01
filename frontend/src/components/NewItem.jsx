@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -28,7 +28,7 @@ function NewItem() {
 			formData.append("images", image);
 		});
 
-		await axios.post("http://localhost:5000/items", formData, {
+		await axiosInstance.post("/items", formData, {
 			headers: {
 				Authorization: `${token}`,
 				"Content-Type": "multipart/form-data",

@@ -12,6 +12,9 @@ import SearchResults from "./components/SearchResults";
 import ErrorBoundary from "./components/ErrorBoundary";
 import SignIn from "./components/SignIn";
 import AboutUs from "./components/AboutUs";
+import Loading from "./components/Loading";
+import { useEffect, useState } from "react";
+import axiosInstance from "./api";
 
 const ProtectedRoute = ({ children }) => {
 	const token = localStorage.getItem("token");
@@ -19,11 +22,39 @@ const ProtectedRoute = ({ children }) => {
 };
 
 function App() {
+	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		//request interceptor
+
+		axiosInstance.interceptors.request.use(
+			(config) => {
+				setLoading(true);
+				return config;
+			},
+			(error) => {
+				return Promise.reject(error);
+			}
+		);
+		//response interceptor
+		axiosInstance.interceptors.response.use(
+			(config) => {
+				setLoading(false);
+				return config;
+			},
+			(error) => {
+				return Promise.reject(error);
+			}
+		);
+	}, []);
+
 	return (
 		<ErrorBoundary>
 			<Router>
 				<div className="flex flex-col min-h-screen h-full w-full">
 					<Navbar />
+					<Loading show={loading} />
+
 					<main className="flex-grow">
 						<Routes>
 							<Route path="/" element={<Home />} />

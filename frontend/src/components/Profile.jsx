@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../api";
 import ChartComponent from "./ChartComponent";
 
 function Profile() {
@@ -16,9 +16,8 @@ function Profile() {
 			setLikes(Likes);
 
 			try {
-				const response = await axios.get(`http://localhost:5000/users/${id}`);
+				const response = await axiosInstance.get(`/users/${id}`);
 				setProfile(response.data);
-				console.log(response.data);
 			} catch (error) {
 				console.error(error);
 			}
@@ -30,7 +29,7 @@ function Profile() {
 	const handleDelete = async (itemId) => {
 		const token = localStorage.getItem("token");
 		try {
-			await axios.delete(`http://localhost:5000/items/${itemId}`, {
+			await axiosInstance.delete(`/items/${itemId}`, {
 				headers: {
 					Authorization: token,
 				},

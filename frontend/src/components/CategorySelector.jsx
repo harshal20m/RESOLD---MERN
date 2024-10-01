@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "./CategorySelector.css";
 
 const categories = [
 	"Electronics",
@@ -22,7 +23,6 @@ const CategorySelector = () => {
 	const categoriesRef = useRef(null);
 	const [showLeftArrow, setShowLeftArrow] = useState(false);
 	const [showRightArrow, setShowRightArrow] = useState(false);
-	const [searchQuery, setSearchQuery] = useState(""); // Assuming this state exists
 
 	const handleCategoryClick = (category) => {
 		setSelectedCategory(category);
@@ -40,22 +40,12 @@ const CategorySelector = () => {
 	}, []);
 
 	return (
-		<div style={{ position: "relative", overflow: "hidden", height: "auto" }}>
+		<div className="relative overflow-hidden h-auto">
 			<div
 				ref={categoriesRef}
-				className="category-container text-black"
+				className="category-container text-black flex overflow-x-auto whitespace-nowrap py-1 "
 				style={{
-					display: "flex",
-					overflowX: "auto",
-					whiteSpace: "nowrap",
 					padding: "5px",
-					marginBottom: "-10px",
-					height: "auto",
-					scrollbarWidth: "none", // Firefox
-					msOverflowStyle: "none", // Edge
-					"&::-webkit-scrollbar": {
-						display: "none", // Chrome, Safari, Opera
-					},
 				}}
 				onScroll={handleScroll}
 			>
@@ -63,12 +53,10 @@ const CategorySelector = () => {
 					<div
 						key={category}
 						onClick={() => handleCategoryClick(category)}
+						className={`category-item px-4 py-2 mx-1 rounded-lg cursor-pointer text-center sm:text-sm text-xs ${
+							selectedCategory === category ? "bg-gray-300" : "bg-gray-100"
+						}`}
 						style={{
-							padding: "10px 20px",
-							margin: "5px",
-							cursor: "pointer",
-							backgroundColor: selectedCategory === category ? "#d3d3d3" : "#f0f0f0",
-							borderRadius: "5px",
 							flexShrink: 0,
 						}}
 					>
@@ -76,36 +64,22 @@ const CategorySelector = () => {
 					</div>
 				))}
 			</div>
+			{/* Left Arrow */}
 			{showLeftArrow && (
 				<div
-					className="slider-arrow left text-black"
-					onClick={() => categoriesRef.current.scrollBy(-300, 0)}
-					style={{
-						position: "absolute",
-						top: "50%",
-						left: "10px",
-						transform: "translateY(-50%)",
-						zIndex: "1",
-						cursor: "pointer",
-					}}
+					className="slider-arrow left text-black absolute top-1/2 left-2 transform -translate-y-1/2 z-10 cursor-pointer"
+					onClick={() => categoriesRef.current.scrollBy({ left: -300, behavior: "smooth" })}
 				>
-					<i className="bx bxs-left-arrow text-2xl size-bold"></i>
+					<i className="bx bxs-left-arrow text-2xl"></i>
 				</div>
 			)}
+			{/* Right Arrow */}
 			{showRightArrow && (
 				<div
-					className="slider-arrow right text-black"
-					onClick={() => categoriesRef.current.scrollBy(300, 0)}
-					style={{
-						position: "absolute",
-						top: "50%",
-						right: "10px",
-						transform: "translateY(-50%)",
-						zIndex: "1",
-						cursor: "pointer",
-					}}
+					className="slider-arrow right text-black absolute top-1/2 right-2 transform -translate-y-1/2 z-10 cursor-pointer"
+					onClick={() => categoriesRef.current.scrollBy({ left: 300, behavior: "smooth" })}
 				>
-					<i className="bx bxs-right-arrow text-2xl text-black size-bold"></i>
+					<i className="bx bxs-right-arrow text-2xl"></i>
 				</div>
 			)}
 		</div>

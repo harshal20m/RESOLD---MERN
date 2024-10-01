@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../api";
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
@@ -13,7 +13,7 @@ function SearchResults() {
 	useEffect(() => {
 		const fetchItems = async () => {
 			try {
-				const response = await axios.get(`http://localhost:5000/items`, {
+				const response = await axiosInstance.get(`/items`, {
 					params: { search: query },
 				});
 				setItems(response.data.items);

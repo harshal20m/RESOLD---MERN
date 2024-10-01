@@ -183,6 +183,14 @@ app.get("/items", async (req, res) => {
 			totalPages: Math.ceil(count / limit),
 			currentPage: Number(page),
 		});
+
+		// setTimeout(() => {
+		// 	res.json({
+		// 		items,
+		// 		totalPages: Math.ceil(count / limit),
+		// 		currentPage: Number(page),
+		// 	});
+		// }, 5000); // 5000 milliseconds = 5 seconds
 	} catch (err) {
 		console.error(err.message);
 		res.status(500).send("Server Error");

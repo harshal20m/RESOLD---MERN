@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../api";
 
 function AddImages({ itemId }) {
 	const [images, setImages] = useState([]);
@@ -11,7 +11,7 @@ function AddImages({ itemId }) {
 		images.forEach((image) => formData.append("images", image));
 
 		try {
-			await axios.put(`http://localhost:5000/items/${itemId}/add-images`, formData, {
+			await axiosInstance.put(`/items/${itemId}/add-images`, formData, {
 				headers: {
 					authorization: token,
 					"Content-Type": "multipart/form-data",

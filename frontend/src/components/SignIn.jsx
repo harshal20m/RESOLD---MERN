@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -35,7 +35,7 @@ const SignIn = () => {
 			if (profileImage) {
 				formData.append("profileImage", profileImage);
 			}
-			await axios.post("http://localhost:5000/register", formData, {
+			await axiosInstance.post("/register", formData, {
 				headers: {
 					"Content-Type": "multipart/form-data",
 				},
@@ -55,7 +55,7 @@ const SignIn = () => {
 	const handleLogin = async (e) => {
 		e.preventDefault();
 		try {
-			const { data } = await axios.post("http://localhost:5000/login", { username, password });
+			const { data } = await axiosInstance.post("/login", { username, password });
 			localStorage.setItem("token", data.token);
 			localStorage.setItem("userId", data._id);
 			toast.success("Login successful");
