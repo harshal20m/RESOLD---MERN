@@ -13,6 +13,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import SignIn from "./components/SignIn";
 import AboutUs from "./components/AboutUs";
 import { useEffect, useState } from "react";
+import "./App.css";
 
 const ProtectedRoute = ({ children }) => {
 	const token = localStorage.getItem("token");
@@ -62,6 +63,8 @@ function App() {
 					<Navbar />
 					{loading && (
 						<div className="loading-container">
+							<i className="bx text-2xl font-bold bx-loader bx-spin"></i>
+
 							<p className="loading-text">
 								Thanks for visiting. <br />
 								It's a full-stack project, so we are running our backend on a public cloud.
