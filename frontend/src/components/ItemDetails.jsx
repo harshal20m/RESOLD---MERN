@@ -5,6 +5,7 @@ import AddImages from "./AddImages";
 import "./css/itemdetails.css";
 import MapComponent from "./MapComponent";
 import ContactSellerPopup from "./ContactSellerPopup";
+import Loading from "./Loading";
 
 function ItemDetails() {
 	const { id } = useParams();
@@ -47,7 +48,7 @@ function ItemDetails() {
 	}, [item]);
 
 	if (!item) {
-		return <div>Loading...</div>;
+		return <Loading />;
 	}
 
 	return (
