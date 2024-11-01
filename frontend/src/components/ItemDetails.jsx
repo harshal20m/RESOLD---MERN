@@ -79,7 +79,7 @@ function ItemDetails() {
 					)}
 					<div
 						ref={thumbnailsRef}
-						className="thumbnails flex overflow-x-auto"
+						className="thumbnails flex w-[80vw] sm:w-full overflow-x-auto"
 						style={{
 							scrollbarWidth: "none", // Firefox
 							msOverflowStyle: "none", // Edge
@@ -107,7 +107,7 @@ function ItemDetails() {
 							style={{
 								position: "absolute",
 								top: "50%",
-								right: "-40px",
+								right: "0px",
 								transform: "translateY(-50%)",
 								zIndex: "1",
 								cursor: "pointer",
